@@ -14,17 +14,13 @@ public class IntentReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
 
-        log(action);
         if (action == null) {
             VolumeUtils.setNoSafeVolume(context);
         } else if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-            Intent alarmIntent = new Intent(context, IntentReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-
+            Intent delayedIntent = new Intent(context, IntentReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, delayedIntent, 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 30000, pendingIntent);
-
         }
     }
 }
