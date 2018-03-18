@@ -13,7 +13,9 @@ public class IntentReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action == null) {
-            Utils.setNoSafeVolume(context);
+            Prefs prefs = new Prefs(context);
+            if (prefs.isNoSafeVolumeWarningEnabled())
+                Utils.setNoSafeVolume(context);
         } else if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             Intent delayedIntent = new Intent(context, IntentReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, delayedIntent, 0);

@@ -9,7 +9,6 @@ public class MonitorService extends AccessibilityService {
 
     private static boolean switchBack = false;
 
-
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
@@ -25,11 +24,16 @@ public class MonitorService extends AccessibilityService {
         if (accessibilityEvent.isFullScreen() &&
                 accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             if (pkg.equals("com.termux")) {
-                Utils.changeIME(getApplicationContext(), true);
-                switchBack = true;
+                Prefs prefs = new Prefs(getApplicationContext());
+                if (prefs.isKeyboardSwitchingEnabled()) {
+                    Utils.changeIME(getApplicationContext(), true);
+                    switchBack = true;
+                }
             } else {
                 if (switchBack) {
-                    Utils.changeIME(getApplicationContext(), false);
+                    Prefs prefs = new Prefs(getApplicationContext());
+                    if (prefs.isKeyboardSwitchingEnabled())
+                        Utils.changeIME(getApplicationContext(), false);
                     switchBack = false;
                 }
             }
