@@ -30,4 +30,8 @@
         android:title="Hacker's Keyboard only in Termux"
         android:defaultValue="true"/>
 
+    <Preference
+        android:key="pref_sip"
+        android:title="SIP settings" />
+
 </PreferenceScreen>

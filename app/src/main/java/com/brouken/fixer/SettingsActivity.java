@@ -1,6 +1,7 @@
 package com.brouken.fixer;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -98,6 +101,26 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
             */
+
+            Preference sipPreference = findPreference("pref_sip");
+            sipPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent("android.intent.action.MAIN");
+                    intent.setComponent(new ComponentName("com.android.phone","com.android.phone.settings.PhoneAccountSettingsActivity"));
+                    try {
+                        startActivity(intent);
+                    } catch (Exception x) {
+                        try {
+                            intent.setComponent(new ComponentName("com.android.phone","com.android.phone.CallFeaturesSetting"));
+                            startActivity(intent);
+                        } catch (Exception xx) {
+                            Toast.makeText(getActivity(), "No activity found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    return true;
+                }
+            });
 
         }
 
