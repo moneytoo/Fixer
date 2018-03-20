@@ -39,19 +39,21 @@ public class MonitorService extends AccessibilityService {
             List<String> visibleApps = new ArrayList<>();
 
             List<AccessibilityWindowInfo> accessibilityWindowInfos = getWindows();
-            log("windows=" + accessibilityWindowInfos.size());
+            //log("windows=" + accessibilityWindowInfos.size());
             for (AccessibilityWindowInfo accessibilityWindowInfo : accessibilityWindowInfos) {
-                log(accessibilityWindowInfo.toString());
+                //log(accessibilityWindowInfo.toString());
 
                 AccessibilityNodeInfo accessibilityNodeInfo = accessibilityWindowInfo.getRoot();
                 if (accessibilityNodeInfo != null) {
-                    log(accessibilityNodeInfo.getPackageName().toString());
+                    //log(accessibilityNodeInfo.getPackageName().toString());
                     visibleApps.add(accessibilityNodeInfo.getPackageName().toString());
                 }
 
+                /*
                 int childCount = accessibilityWindowInfo.getChildCount();
                 if (childCount > 0)
                     log("childCount=" + childCount);
+                */
             }
 
             if (visibleApps.contains("com.termux")) {
