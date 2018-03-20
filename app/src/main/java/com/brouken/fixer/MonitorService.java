@@ -1,24 +1,16 @@
 package com.brouken.fixer;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.ActivityManager;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
-import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import static com.brouken.fixer.Utils.log;
 
@@ -124,6 +116,7 @@ public class MonitorService extends AccessibilityService {
             if (callState == TelephonyManager.CALL_STATE_IDLE)
                 stream = AudioManager.STREAM_MUSIC;
 
+            // https://github.com/KrongKrongPadakPadak/mvo
             try {
                 audioManager.getClass().getMethod("forceVolumeControlStream", new Class[]{Integer.TYPE}).invoke(audioManager, new Object[]{ stream });
             } catch (Exception e) {
