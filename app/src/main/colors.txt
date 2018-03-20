@@ -1,0 +1,2 @@
+background #607d8b
+foreground #f4f4f4
