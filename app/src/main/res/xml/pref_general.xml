@@ -30,6 +30,11 @@
         android:title="Hacker's Keyboard only in Termux"
         android:defaultValue="true"/>
 
+    <SwitchPreference
+        android:key="pref_media_volume_default"
+        android:title="Media volume by default"
+        android:defaultValue="true"/>
+
     <Preference
         android:key="pref_sip"
         android:title="SIP settings" />
