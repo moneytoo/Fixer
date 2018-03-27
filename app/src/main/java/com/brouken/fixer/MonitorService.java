@@ -17,20 +17,16 @@ import static com.brouken.fixer.Utils.log;
 public class MonitorService extends AccessibilityService {
 
     @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+
+        //TODO: load prefs
+    }
+
+    @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
-
         //log(accessibilityEvent.toString());
-
-        /*
-        AccessibilityNodeInfo root = getRootInActiveWindow();
-        if (root != null) {
-            log(root.toString());
-
-            dumpToChildren(root);
-        }
-        */
-
 
         if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
@@ -45,15 +41,8 @@ public class MonitorService extends AccessibilityService {
 
                 AccessibilityNodeInfo accessibilityNodeInfo = accessibilityWindowInfo.getRoot();
                 if (accessibilityNodeInfo != null) {
-                    //log(accessibilityNodeInfo.getPackageName().toString());
                     visibleApps.add(accessibilityNodeInfo.getPackageName().toString());
                 }
-
-                /*
-                int childCount = accessibilityWindowInfo.getChildCount();
-                if (childCount > 0)
-                    log("childCount=" + childCount);
-                */
             }
 
             if (visibleApps.contains("com.termux")) {
@@ -63,41 +52,6 @@ public class MonitorService extends AccessibilityService {
 
             if (accessibilityEventPackageName.equals("org.pocketworkstation.pckeyboard")) {
                 Utils.changeIME(getApplicationContext(), false);
-            }
-        }
-    }
-
-    void dumpToChildren(AccessibilityNodeInfo nodeInfo) {
-        //log(nodeInfo.toString());
-
-        int count = nodeInfo.getChildCount();
-        //log("childCount=" + count);
-
-        for (int i = 0; i < count; i++) {
-            AccessibilityNodeInfo child = nodeInfo.getChild(i);
-
-            if (child == null)
-                continue;
-
-            dumpToChildren(child);
-
-            CharSequence sequence = child.getText();
-            if (sequence != null) {
-                String text = sequence.toString();
-                /*
-                if (text.startsWith("Search or type web")) {
-                    //child.setText("OMG it works!");
-                    child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
-                }
-                */
-                log(text);
-                if (text.equals("Uninstall")) {
-                    //child.setText("OMG it works!");
-                    log("EEEEEEEEEEEEEEE");
-                    //child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
-                    //child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SHOW_ON_SCREEN.getId());
-                    //child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_TO_POSITION.getId());
-                }
             }
         }
     }
