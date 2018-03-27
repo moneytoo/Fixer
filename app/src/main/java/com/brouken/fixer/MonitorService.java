@@ -16,11 +16,14 @@ import static com.brouken.fixer.Utils.log;
 
 public class MonitorService extends AccessibilityService {
 
+    Prefs mPrefs;
+
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
 
         //TODO: load prefs
+        mPrefs = new Prefs(this);
     }
 
     @Override
@@ -28,30 +31,32 @@ public class MonitorService extends AccessibilityService {
         //log("onAccessibilityEvent()");
         //log(accessibilityEvent.toString());
 
-        if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
-            //log(accessibilityEventPackageName);
+        if (mPrefs.isKeyboardSwitchingEnabled()) {
+            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
+                //log(accessibilityEventPackageName);
 
-            List<String> visibleApps = new ArrayList<>();
+                List<String> visibleApps = new ArrayList<>();
 
-            List<AccessibilityWindowInfo> accessibilityWindowInfos = getWindows();
-            //log("windows=" + accessibilityWindowInfos.size());
-            for (AccessibilityWindowInfo accessibilityWindowInfo : accessibilityWindowInfos) {
-                //log(accessibilityWindowInfo.toString());
+                List<AccessibilityWindowInfo> accessibilityWindowInfos = getWindows();
+                //log("windows=" + accessibilityWindowInfos.size());
+                for (AccessibilityWindowInfo accessibilityWindowInfo : accessibilityWindowInfos) {
+                    //log(accessibilityWindowInfo.toString());
 
-                AccessibilityNodeInfo accessibilityNodeInfo = accessibilityWindowInfo.getRoot();
-                if (accessibilityNodeInfo != null) {
-                    visibleApps.add(accessibilityNodeInfo.getPackageName().toString());
+                    AccessibilityNodeInfo accessibilityNodeInfo = accessibilityWindowInfo.getRoot();
+                    if (accessibilityNodeInfo != null) {
+                        visibleApps.add(accessibilityNodeInfo.getPackageName().toString());
+                    }
                 }
-            }
 
-            if (visibleApps.contains("com.termux")) {
-                Utils.changeIME(getApplicationContext(), true);
-                return;
-            }
+                if (visibleApps.contains("com.termux")) {
+                    Utils.changeIME(getApplicationContext(), true);
+                    return;
+                }
 
-            if (accessibilityEventPackageName.equals("org.pocketworkstation.pckeyboard")) {
-                Utils.changeIME(getApplicationContext(), false);
+                if (accessibilityEventPackageName.equals("org.pocketworkstation.pckeyboard")) {
+                    Utils.changeIME(getApplicationContext(), false);
+                }
             }
         }
     }
@@ -59,24 +64,26 @@ public class MonitorService extends AccessibilityService {
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
 
-        log("onKeyEvent " + event.toString());
-        final int keyCode = event.getKeyCode();
+        if (mPrefs.isMediaVolumeDefaultEnabled()) {
+            log("onKeyEvent " + event.toString());
+            final int keyCode = event.getKeyCode();
 
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
 
-            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            int callState = telephonyManager.getCallState();
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                int callState = telephonyManager.getCallState();
 
-            Object stream = -1;
-            if (callState == TelephonyManager.CALL_STATE_IDLE)
-                stream = AudioManager.STREAM_MUSIC;
+                Object stream = -1;
+                if (callState == TelephonyManager.CALL_STATE_IDLE)
+                    stream = AudioManager.STREAM_MUSIC;
 
-            // https://github.com/KrongKrongPadakPadak/mvo
-            try {
-                audioManager.getClass().getMethod("forceVolumeControlStream", new Class[]{Integer.TYPE}).invoke(audioManager, new Object[]{ stream });
-            } catch (Exception e) {
-                e.printStackTrace();
+                // https://github.com/KrongKrongPadakPadak/mvo
+                try {
+                    audioManager.getClass().getMethod("forceVolumeControlStream", new Class[]{Integer.TYPE}).invoke(audioManager, new Object[]{stream});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
