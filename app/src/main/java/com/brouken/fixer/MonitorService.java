@@ -22,7 +22,6 @@ public class MonitorService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
 
-        //TODO: load prefs
         mPrefs = new Prefs(this);
     }
 
