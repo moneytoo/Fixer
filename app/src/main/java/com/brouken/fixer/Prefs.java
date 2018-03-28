@@ -1,8 +1,12 @@
 package com.brouken.fixer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import static com.brouken.fixer.Utils.hasPermission;
+import static com.brouken.fixer.Utils.log;
 
 public class Prefs {
 
@@ -17,6 +21,10 @@ public class Prefs {
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         loadSavedPreferences();
+
+        if (hasPermission(context, Manifest.permission.WRITE_SETTINGS)) {
+            log("HAS!!!!!!!!!@");
+        }
     }
 
     private void loadSavedPreferences() {

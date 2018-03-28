@@ -12,8 +12,12 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.stericson.RootTools.RootTools;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -125,12 +129,20 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            //inflater.inflate(R.menu.menu, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
-            }
+            }/* else if (id == R.id.root) {
+                RootTools.isAccessGiven();
+            }*/
             return super.onOptionsItemSelected(item);
         }
     }
