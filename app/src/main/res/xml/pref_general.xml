@@ -46,6 +46,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="Samsung">
+
+        <SwitchPreference
+            android:key="pref_samsung_led_dnd"
+            android:title="No LED in DnD"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="Shortcut">
 
         <Preference

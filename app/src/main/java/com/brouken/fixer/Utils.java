@@ -14,7 +14,8 @@ import com.stericson.RootTools.RootTools;
 public class Utils {
 
     public static void log(String text) {
-        Log.d("Fixer", text);
+        if (BuildConfig.DEBUG && text != null)
+            Log.d("Fixer", text);
     }
 
     // https://www.xda-developers.com/how-to-automatically-disable-the-high-volume-warning-without-root/

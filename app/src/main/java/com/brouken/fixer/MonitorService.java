@@ -17,12 +17,16 @@ import static com.brouken.fixer.Utils.log;
 public class MonitorService extends AccessibilityService {
 
     Prefs mPrefs;
+    Interruption mInterruption;
 
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
 
         mPrefs = new Prefs(this);
+
+        if (mPrefs.isSamsungNoLedInDnDEnabled())
+            mInterruption = new Interruption(this);
     }
 
     @Override

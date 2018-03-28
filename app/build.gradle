@@ -5,7 +5,8 @@ android {
     defaultConfig {
         applicationId "com.brouken.fixer"
         minSdkVersion 23
-        targetSdkVersion 27
+        //targetSdkVersion 27
+        targetSdkVersion 22
         versionCode 1
         versionName "0.1"
     }
