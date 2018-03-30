@@ -67,6 +67,10 @@
             android:key="pref_sip"
             android:title="SIP settings" />
 
+        <Preference
+            android:key="pref_radio"
+            android:title="Radio config" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

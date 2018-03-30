@@ -126,6 +126,21 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
+            Preference radioPreference = findPreference("pref_radio");
+            radioPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent("android.intent.action.MAIN");
+                    intent.setComponent(new ComponentName("com.android.settings","com.android.settings.RadioInfo"));
+                    try {
+                        startActivity(intent);
+                    } catch (Exception x) {
+                        Toast.makeText(getActivity(), "No activity found", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+            });
+
         }
 
         @Override
