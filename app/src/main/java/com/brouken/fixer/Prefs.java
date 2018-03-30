@@ -15,22 +15,19 @@ public class Prefs {
     private boolean pref_no_safe_volume_warning = true;
     private boolean pref_keyboard_switching = true;
     private boolean pref_media_volume_default = true;
-
+    private boolean pref_power_display_off = true;
     private boolean pref_samsung_led_dnd = false;
 
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         loadSavedPreferences();
-
-        if (hasPermission(context, Manifest.permission.WRITE_SETTINGS)) {
-            log("HAS!!!!!!!!!@");
-        }
     }
 
     private void loadSavedPreferences() {
         pref_no_safe_volume_warning = mSharedPreferences.getBoolean("pref_no_safe_volume_warning", pref_no_safe_volume_warning);
         pref_keyboard_switching = mSharedPreferences.getBoolean("pref_keyboard_switching", pref_keyboard_switching);
         pref_media_volume_default = mSharedPreferences.getBoolean("pref_media_volume_default", pref_media_volume_default);
+        pref_power_display_off = mSharedPreferences.getBoolean("pref_power_display_off", pref_power_display_off);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
     }
 
@@ -44,6 +41,10 @@ public class Prefs {
 
     public boolean isMediaVolumeDefaultEnabled() {
         return pref_media_volume_default;
+    }
+
+    public boolean isDisplayOffOnPowerEventsEnabled() {
+        return pref_power_display_off;
     }
 
     public boolean isSamsungNoLedInDnDEnabled() {

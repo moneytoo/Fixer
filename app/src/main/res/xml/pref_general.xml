@@ -36,7 +36,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Keyboard">
+        android:title="Misc">
+
+        <SwitchPreference
+            android:key="pref_power_display_off"
+            android:title="Keep display off on power events"
+            android:defaultValue="true" />
 
         <SwitchPreference
             android:key="pref_keyboard_switching"
