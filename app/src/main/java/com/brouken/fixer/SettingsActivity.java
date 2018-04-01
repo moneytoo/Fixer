@@ -1,17 +1,13 @@
 package com.brouken.fixer;
 
-import android.app.SearchManager;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -149,7 +145,36 @@ public class SettingsActivity extends PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     try {
                         RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
-                                new Command(0, false, "pm disable com.google.android.gms/com.google.android.location.settings.LocationSettingsCheckerActivity"));
+                                new Command(0, false, "pm disable com.google.android.gms/com.google.android.location.settings.LocationSettingsCheckerActivity") {
+                                    String output = "";
+
+                                    @Override
+                                    public void commandCompleted(int id, int exitcode) {
+                                        super.commandCompleted(id, exitcode);
+
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                                builder.setMessage(output);
+                                                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                dialogInterface.cancel();
+                                                            }
+                                                        });
+                                                AlertDialog dialog = builder.create();
+                                                dialog.show();
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void commandOutput(int id, String line) {
+                                        super.commandOutput(id, line);
+                                        output += line + "\n";
+                                    }
+                                });
                     } catch (Exception x) {
 
                     }
