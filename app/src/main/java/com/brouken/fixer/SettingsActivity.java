@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -136,6 +138,20 @@ public class SettingsActivity extends PreferenceActivity {
                         startActivity(intent);
                     } catch (Exception x) {
                         Toast.makeText(getActivity(), "No activity found", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+            });
+
+            Preference gmsPreference = findPreference("pref_gms_location");
+            gmsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    try {
+                        RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
+                                new Command(0, false, "pm disable com.google.android.gms/com.google.android.location.settings.LocationSettingsCheckerActivity"));
+                    } catch (Exception x) {
+
                     }
                     return true;
                 }

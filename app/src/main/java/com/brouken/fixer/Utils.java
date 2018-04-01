@@ -38,8 +38,7 @@ public class Utils {
             }
         }
         else if (RootTools.isRootAvailable()) {
-            String command1 = "settings put global audio_safe_volume_state 2";
-            Command command = new Command(0, false, command1);
+            Command command = new Command(0, false, "settings put global audio_safe_volume_state 2");
             try {
                 RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(command);
                 //RootTools.getShell(true).add(command);

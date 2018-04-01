@@ -61,7 +61,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Shortcut">
+        android:title="One time setup">
+
+        <Preference
+            android:key="pref_gms_location"
+            android:title="No location dialog in GM" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Shortcuts">
 
         <Preference
             android:key="pref_sip"
