@@ -38,9 +38,9 @@ public class Utils {
             }
         }
         else if (RootTools.isRootAvailable()) {
-            Command command = new Command(0, false, "settings put global audio_safe_volume_state 2");
             try {
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(command);
+                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
+                        new Command(0, false, "settings put global audio_safe_volume_state 2"));
                 //RootTools.getShell(true).add(command);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -67,7 +67,12 @@ public class Utils {
             ime = "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
 
         try {
-            Settings.Secure.putString(context.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD, ime);
+            if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
+                Settings.Secure.putString(context.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD, ime);
+            } else if (RootTools.isRootAvailable()) {
+                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
+                        new Command(0, false, "settings put secure default_input_method " + ime));
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
