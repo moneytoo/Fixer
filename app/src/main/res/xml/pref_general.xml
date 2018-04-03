@@ -69,6 +69,12 @@
             android:summary="Root or targetSdk &lt;= 22"
             android:defaultValue="false"/>
 
+        <SwitchPreference
+            android:key="pref_samsung_popups"
+            android:title="No BT/WiFi popups"
+            android:summary="Accessibility"
+            android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

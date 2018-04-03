@@ -18,6 +18,7 @@ public class Prefs {
     private boolean pref_power_display_off = true;
     private boolean pref_gms_location = true;
     private boolean pref_samsung_led_dnd = false;
+    private boolean pref_samsung_popups = false;
 
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -31,6 +32,7 @@ public class Prefs {
         pref_power_display_off = mSharedPreferences.getBoolean("pref_power_display_off", pref_power_display_off);
         pref_gms_location = mSharedPreferences.getBoolean("pref_gms_location", pref_gms_location);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
+        pref_samsung_popups = mSharedPreferences.getBoolean("pref_samsung_popups", pref_samsung_popups);
     }
 
     public boolean isNoSafeVolumeWarningEnabled() {
@@ -55,5 +57,9 @@ public class Prefs {
 
     public boolean isSamsungNoLedInDnDEnabled() {
         return pref_samsung_led_dnd;
+    }
+
+    public boolean isSamsungNoPopupsEnabled() {
+        return pref_samsung_popups;
     }
 }

@@ -9,11 +9,13 @@ android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEve
 
 for debug (doodles?)
 android:accessibilityEventTypes="typeAllMask"
+
+android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms"
 -->
 <accessibility-service
     android:accessibilityEventTypes="typeWindowStateChanged"
+    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms, com.android.settings"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms"
     android:canRetrieveWindowContent="true"
     android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents|flagRetrieveInteractiveWindows|flagReportViewIds"
     android:canRequestFilterKeyEvents="true"

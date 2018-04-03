@@ -32,7 +32,41 @@ public class MonitorService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
-        //log(accessibilityEvent.toString());
+        log(accessibilityEvent.toString());
+
+        if (mPrefs.isSamsungNoPopupsEnabled()) {
+            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
+                if (accessibilityEventPackageName.equals("com.android.settings")) {
+                    if (accessibilityEvent.getClassName().toString().equals("android.app.Dialog")) {
+                        List<CharSequence> texts = accessibilityEvent.getText();
+                        if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("bluetooth")) {
+                            //log("I'M IN!!!!!!!!!!!!!!!!");
+                            //dumpToChildren(getRootInActiveWindow());
+
+                            List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("android:id/button1");
+                            for (AccessibilityNodeInfo nodeInfo : nodeInfos)
+                                nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                        }
+
+                    }
+
+                    if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.settings.wifi.WifiPickerDialog")) {
+                        List<CharSequence> texts = accessibilityEvent.getText();
+                        if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("wi-fi")) {
+                            //log("I'M IN!!!!!!!!!!!!!!!!");
+                            //dumpToChildren(getRootInActiveWindow());
+                            //dumpToChildren(accessibilityEvent.getSource());
+
+                            List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("com.android.settings:id/wifi_picker_dialog_cancel");
+                            for (AccessibilityNodeInfo nodeInfo : nodeInfos)
+                                nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                        }
+
+                    }
+                }
+            }
+        }
 
         if (mPrefs.isGMSNoLocationEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
