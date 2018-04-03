@@ -139,7 +139,7 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            Preference gmsPreference = findPreference("pref_gms_location");
+            Preference gmsPreference = findPreference("pref_gms_location_persistent");
             gmsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

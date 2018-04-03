@@ -26,11 +26,13 @@
         <SwitchPreference
             android:key="pref_no_safe_volume_warning"
             android:title="No safe volume warning"
+            android:summary="Root or WRITE_SECURE_SETTINGS"
             android:defaultValue="true"/>
 
         <SwitchPreference
             android:key="pref_media_volume_default"
             android:title="Media volume by default"
+            android:summary="Accessibility"
             android:defaultValue="true"/>
 
     </PreferenceCategory>
@@ -40,13 +42,21 @@
 
         <SwitchPreference
             android:key="pref_power_display_off"
-            android:title="Keep display off on power events"
+            android:title="[WIP] Display off on power events"
+            android:summary="TODO: Android P"
             android:defaultValue="true" />
 
         <SwitchPreference
             android:key="pref_keyboard_switching"
             android:title="Hacker's Keyboard only in Termux"
+            android:summary="Root or WRITE_SECURE_SETTINGS"
             android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="pref_gms_location"
+            android:title="No location dialog in GM"
+            android:summary="Accessibility"
+            android:defaultValue="true" />
 
     </PreferenceCategory>
 
@@ -56,6 +66,7 @@
         <SwitchPreference
             android:key="pref_samsung_led_dnd"
             android:title="No LED in DnD"
+            android:summary="Root or targetSdk &lt;= 22"
             android:defaultValue="false"/>
 
     </PreferenceCategory>
@@ -64,8 +75,9 @@
         android:title="One time setup">
 
         <Preference
-            android:key="pref_gms_location"
-            android:title="No location dialog in GM" />
+            android:key="pref_gms_location_persistent"
+            android:title="No location dialog in GM"
+            android:summary="Root" />
 
     </PreferenceCategory>
 
@@ -78,7 +90,7 @@
 
         <Preference
             android:key="pref_radio"
-            android:title="Radio config" />
+            android:title="Radio (Device info)" />
 
     </PreferenceCategory>
 

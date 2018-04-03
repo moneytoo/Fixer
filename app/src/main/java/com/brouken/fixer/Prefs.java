@@ -16,6 +16,7 @@ public class Prefs {
     private boolean pref_keyboard_switching = true;
     private boolean pref_media_volume_default = true;
     private boolean pref_power_display_off = true;
+    private boolean pref_gms_location = true;
     private boolean pref_samsung_led_dnd = false;
 
     public Prefs(Context context) {
@@ -28,6 +29,7 @@ public class Prefs {
         pref_keyboard_switching = mSharedPreferences.getBoolean("pref_keyboard_switching", pref_keyboard_switching);
         pref_media_volume_default = mSharedPreferences.getBoolean("pref_media_volume_default", pref_media_volume_default);
         pref_power_display_off = mSharedPreferences.getBoolean("pref_power_display_off", pref_power_display_off);
+        pref_gms_location = mSharedPreferences.getBoolean("pref_gms_location", pref_gms_location);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
     }
 
@@ -45,6 +47,10 @@ public class Prefs {
 
     public boolean isDisplayOffOnPowerEventsEnabled() {
         return pref_power_display_off;
+    }
+
+    public boolean isGMSNoLocationEnabled() {
+        return pref_gms_location;
     }
 
     public boolean isSamsungNoLedInDnDEnabled() {

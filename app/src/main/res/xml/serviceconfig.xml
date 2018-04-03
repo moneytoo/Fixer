@@ -13,8 +13,8 @@ android:accessibilityEventTypes="typeAllMask"
 <accessibility-service
     android:accessibilityEventTypes="typeWindowStateChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard"
+    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms"
     android:canRetrieveWindowContent="true"
-    android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents|flagRetrieveInteractiveWindows"
+    android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents|flagRetrieveInteractiveWindows|flagReportViewIds"
     android:canRequestFilterKeyEvents="true"
     xmlns:android="http://schemas.android.com/apk/res/android" />

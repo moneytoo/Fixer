@@ -34,6 +34,16 @@ public class MonitorService extends AccessibilityService {
         //log("onAccessibilityEvent()");
         //log(accessibilityEvent.toString());
 
+        if (mPrefs.isGMSNoLocationEnabled()) {
+            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                if (accessibilityEvent.getClassName().toString().equals("com.google.android.location.settings.LocationSettingsCheckerActivity")) {
+                    List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("android:id/button2");
+                    for (AccessibilityNodeInfo nodeInfo : nodeInfos)
+                        nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                }
+            }
+        }
+
         if (mPrefs.isKeyboardSwitchingEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
@@ -96,5 +106,33 @@ public class MonitorService extends AccessibilityService {
     @Override
     public void onInterrupt() {
 
+    }
+
+    void dumpToChildren(AccessibilityNodeInfo nodeInfo) {
+        log(nodeInfo.toString());
+
+        int count = nodeInfo.getChildCount();
+        //log("childCount=" + count);
+
+        for (int i = 0; i < count; i++) {
+            AccessibilityNodeInfo child = nodeInfo.getChild(i);
+
+            if (child == null)
+                continue;
+
+            dumpToChildren(child);
+
+            CharSequence sequence = child.getText();
+            if (sequence != null) {
+                String text = sequence.toString();
+                /*
+                if (text.startsWith("Search or type web")) {
+                    //child.setText("OMG it works!");
+                    child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                }
+                */
+                //log(text);
+            }
+        }
     }
 }
