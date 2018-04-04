@@ -58,6 +58,11 @@
             android:summary="Accessibility"
             android:defaultValue="true" />
 
+        <Preference
+            android:key="pref_gms_location_persistent"
+            android:title="No location dialog in GM"
+            android:summary="Root (one time setup)" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -78,16 +83,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="One time setup">
-
-        <Preference
-            android:key="pref_gms_location_persistent"
-            android:title="No location dialog in GM"
-            android:summary="Root" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="Shortcuts">
 
         <Preference
@@ -97,6 +92,16 @@
         <Preference
             android:key="pref_radio"
             android:title="Radio (Device info)" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Setup">
+
+        <Preference
+            android:title="Accessibility">
+            <intent android:action="android.settings.ACCESSIBILITY_SETTINGS" />
+        </Preference>
 
     </PreferenceCategory>
 
