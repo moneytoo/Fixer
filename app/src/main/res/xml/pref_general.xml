@@ -49,7 +49,7 @@
         <SwitchPreference
             android:key="pref_keyboard_switching"
             android:title="Hacker's Keyboard only in Termux"
-            android:summary="Root or WRITE_SECURE_SETTINGS"
+            android:summary="Accessibility and (root or WRITE_SECURE_SETTINGS)"
             android:defaultValue="true"/>
 
         <SwitchPreference
