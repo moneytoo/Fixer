@@ -2,11 +2,11 @@
 
 Fixer a suite of tweaks that works around some features I find annoying.
 
-**Why Fixer**?
+**Why Fixer?**
 *    No ads or tracking
 *    It's free and open; Tasker is paid
 *    Setting up Tasker can be exhausting and non trivial
-*    Rework of existing solutions for maximum efficiency
+*    Rework and improvement of existing solutions for maximum efficiency
 *    All-in-1: Integrating all tweaks to one app is more efficient, single running service
 *    Opportunity for me to learn more and be creative in finding work arounds
 
@@ -14,7 +14,7 @@ Fixer a suite of tweaks that works around some features I find annoying.
 
 Root access (or Xposed) is not required, it's just an alternative.
 
-1. ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS`` (or allow root access)
+1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. If you're rooted, granting this permission is not necessary. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS``
 2. Enable Accessibility
 
 ##Features
