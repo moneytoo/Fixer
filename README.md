@@ -1,0 +1,1 @@
+adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS
