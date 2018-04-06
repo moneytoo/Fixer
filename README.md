@@ -58,3 +58,14 @@ Notes:
 Description: Set often unavailable network modes like "LTE only" or "LTE/WCDMA" (4G/3G without 2G)<br>
 Requirements: None<br>
 Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
+
+##ToDo
+
+*    Keep screen off on power events - requires P flag, base it on https://github.com/mudar/SnooZy
+*    Disable lock screen on wifi - requires P
+*    Long press volume controls - systemized, based on https://github.com/Cilenco/skipTrackLongPressVolume, since Oreo
+*    Samsung: Knox DNS changer, base it on Adhell3
+*    Compact volume panel? Base on Noyze?
+*    Samsung: keys light
+*    Samsung: flashlight
+*    Ice box via device admin
