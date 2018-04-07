@@ -61,8 +61,8 @@ Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 
 ##ToDo
 
-*    Keep screen off on power events - requires P flag, base it on https://github.com/mudar/SnooZy
-*    Disable lock screen on wifi - requires P
+*    Keep screen off on power events - requires P flag, base it on https://github.com/mudar/SnooZy, requires https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN
+*    Disable lock screen on wifi - requires P https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN
 *    Long press volume controls - systemized, based on https://github.com/Cilenco/skipTrackLongPressVolume, since Oreo
 *    Samsung: Knox DNS changer, base it on Adhell3
 *    Compact volume panel? Base on Noyze?
