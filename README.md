@@ -61,14 +61,16 @@ Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 
 ##ToDo
 
-*    Side screen gestures - base (UI only?) on PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
+*    Side screen gestures - base (UI) on PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
 *    Keep screen off on power events - base it on https://github.com/mudar/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
 *    Disable lock screen on wifi - base it on http://forum.joaoapps.com/index.php?resources/disable-and-enable-your-lock-screen-at-will-no-root.237/, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
 *    Long press volume controls - based on https://github.com/Cilenco/skipTrackLongPressVolume, requires Android Oreo and root (need to be "systemized", [App Systemizer for Magisk](https://forum.xda-developers.com/apps/magisk/module-app-systemizer-t3477512) works fine)
 *    Samsung: DNS changer - base it on https://github.com/fusionjack/Adhell3
-*    Samsung: keys light
-*    Samsung: flashlight -
+*    Samsung: Keys light
+*    Samsung: Flashlight - https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    (?) App disabler/enabler - Ice box via device admin (?)
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
-*    Fingerprint gestures - [FingerprintGestureController](https://developer.android.com/reference/android/accessibilityservice/FingerprintGestureController.html) (only if/when upgrading from S7)
-*    Samsung: Remap Bixby button - something like https://play.google.com/store/apps/details?id=com.jamworks.bxactions (only if/when upgrading from S7)
+
+####If/when I'm upgrading from S7
+*    Fingerprint gestures - [FingerprintGestureController](https://developer.android.com/reference/android/accessibilityservice/FingerprintGestureController.html)
+*    Samsung: Remap Bixby button - something like https://play.google.com/store/apps/details?id=com.jamworks.bxactions
