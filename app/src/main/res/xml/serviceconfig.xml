@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-for keyboards:
-android:accessibilityEventTypes="typeWindowStateChanged"
-android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard"
-
-for media volume?
-android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents"
-
-for debug (doodles?)
-android:accessibilityEventTypes="typeAllMask"
-
-android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms"
--->
 <accessibility-service
     android:accessibilityEventTypes="typeWindowStateChanged"
     android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms, com.android.settings"
