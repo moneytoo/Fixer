@@ -1,25 +1,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<ListPreference
-        android:defaultValue="https://www.google.com/search?q=%s"
-        android:entries="@array/pref_engine_titles"
-        android:entryValues="@array/pref_engine_values"
-        android:key="engine"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_engine" />
-
-    <EditTextPreference
-        android:defaultValue="@string/pref_default_engine_custom"
-        android:inputType="textUri"
-        android:dependency="engine"
-        android:key="engine_custom"
-        android:title="@string/pref_title_engine_custom" />
-
-    <Preference
-        android:key="engine_test"
-        android:title="@string/pref_title_engine_test" />-->
-
     <PreferenceCategory
         android:title="Volume">
 
@@ -39,12 +19,6 @@
 
     <PreferenceCategory
         android:title="Misc">
-
-        <SwitchPreference
-            android:key="pref_power_display_off"
-            android:title="[WIP] Display off on power events"
-            android:summary="TODO: Android P"
-            android:defaultValue="true" />
 
         <SwitchPreference
             android:key="pref_keyboard_switching"

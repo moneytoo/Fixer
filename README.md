@@ -17,6 +17,8 @@ Root access (or Xposed) is not required, it's just an alternative.
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. If you're rooted, granting this permission is not necessary. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS``
 2. Enable Accessibility
 
+WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
+
 ##Features
 
 ###No safe volume warning
