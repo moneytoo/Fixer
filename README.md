@@ -66,7 +66,7 @@ Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``
-*    (?) App disabler/enabler - [DevicePolicyManager.setApplicationHidden()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean))
+*    (?) App disabler/enabler - [DevicePolicyManager.setPackagesSuspended()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setPackagesSuspended(android.content.ComponentName,%20java.lang.String[],%20boolean))
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
 
 ####When running Android O
