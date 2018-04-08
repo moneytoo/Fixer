@@ -78,6 +78,6 @@ Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 *    Keep screen off on power events - base it on https://github.com/mudar/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
 *    Disable lock screen on wifi - base it on http://forum.joaoapps.com/index.php?resources/disable-and-enable-your-lock-screen-at-will-no-root.237/, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
 
-####When upgrading from S7
+#### When upgrading from S7
 *    Fingerprint gestures - [FingerprintGestureController](https://developer.android.com/reference/android/accessibilityservice/FingerprintGestureController.html)
 *    Samsung: Remap Bixby button - something like https://play.google.com/store/apps/details?id=com.jamworks.bxactions
