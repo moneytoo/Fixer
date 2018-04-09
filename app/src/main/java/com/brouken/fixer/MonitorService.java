@@ -42,7 +42,8 @@ public class MonitorService extends AccessibilityService {
             mInterruption = new Interruption(this);
 
         // TODO: Disable in full screen (?)
-        startGestureArea();
+        if (mPrefs.isSideScreenGesturesEnabled())
+            startGestureArea();
     }
 
     @Override

@@ -37,6 +37,12 @@
             android:title="No location dialog in GM"
             android:summary="Root (one time setup)" />
 
+        <SwitchPreference
+            android:key="pref_side_screen_gestures"
+            android:title="Side screen gestures"
+            android:summary="Accessibility"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

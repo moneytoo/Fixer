@@ -52,7 +52,7 @@ Requirements: Accessibility<br>
 Notes:
 
 ### Shortcut: SIP settings
-Description: Brings up system SIP/VoIP configuration screen that is often hidden but functional.<br>
+Description: Brings up system SIP/VoIP configuration screen that is often hidden but functional<br>
 Requirements: None<br>
 Notes:
 
@@ -61,9 +61,15 @@ Description: Set often unavailable network modes like "LTE only" or "LTE/WCDMA" 
 Requirements: None<br>
 Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 
+#### Since version 0.2
+
+### Side screen gestures
+Description: Pie control without actual pie. Swipe from center of a left or right side towards top/center/bottom for recents/home/back<br>
+Requirements: Accessibility<br>
+Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
+
 ## ToDo
 
-*    Side screen gestures - base (UI) on PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
 *    Samsung: DNS changer - base it on https://github.com/fusionjack/Adhell3
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight

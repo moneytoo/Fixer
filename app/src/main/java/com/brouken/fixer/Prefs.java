@@ -16,6 +16,7 @@ public class Prefs {
     private boolean pref_keyboard_switching = true;
     private boolean pref_media_volume_default = true;
     private boolean pref_gms_location = true;
+    private boolean pref_side_screen_gestures = true;
     private boolean pref_samsung_led_dnd = false;
     private boolean pref_samsung_popups = false;
 
@@ -29,6 +30,7 @@ public class Prefs {
         pref_keyboard_switching = mSharedPreferences.getBoolean("pref_keyboard_switching", pref_keyboard_switching);
         pref_media_volume_default = mSharedPreferences.getBoolean("pref_media_volume_default", pref_media_volume_default);
         pref_gms_location = mSharedPreferences.getBoolean("pref_gms_location", pref_gms_location);
+        pref_side_screen_gestures = mSharedPreferences.getBoolean("pref_side_screen_gestures", pref_side_screen_gestures);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
         pref_samsung_popups = mSharedPreferences.getBoolean("pref_samsung_popups", pref_samsung_popups);
     }
@@ -47,6 +49,10 @@ public class Prefs {
 
     public boolean isGMSNoLocationEnabled() {
         return pref_gms_location;
+    }
+
+    public boolean isSideScreenGesturesEnabled() {
+        return pref_side_screen_gestures;
     }
 
     public boolean isSamsungNoLedInDnDEnabled() {
