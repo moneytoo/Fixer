@@ -2,9 +2,17 @@ package com.brouken.fixer;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.media.AudioManager;
+import android.os.Build;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
@@ -19,6 +27,11 @@ public class MonitorService extends AccessibilityService {
     Prefs mPrefs;
     Interruption mInterruption;
 
+    float gestureTapX;
+    float gestureTapY;
+
+    boolean gestureDistanceReached = false;
+
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
@@ -27,6 +40,9 @@ public class MonitorService extends AccessibilityService {
 
         if (mPrefs.isSamsungNoLedInDnDEnabled())
             mInterruption = new Interruption(this);
+
+        // TODO: Disable in full screen (?)
+        startGestureArea();
     }
 
     @Override
@@ -112,7 +128,7 @@ public class MonitorService extends AccessibilityService {
     protected boolean onKeyEvent(KeyEvent event) {
 
         if (mPrefs.isMediaVolumeDefaultEnabled()) {
-            log("onKeyEvent " + event.toString());
+            //log("onKeyEvent " + event.toString());
             final int keyCode = event.getKeyCode();
 
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
@@ -125,7 +141,6 @@ public class MonitorService extends AccessibilityService {
                 if (callState == TelephonyManager.CALL_STATE_IDLE)
                     stream = AudioManager.STREAM_MUSIC;
 
-                // https://github.com/KrongKrongPadakPadak/mvo
                 try {
                     audioManager.getClass().getMethod("forceVolumeControlStream", new Class[]{Integer.TYPE}).invoke(audioManager, new Object[]{stream});
                 } catch (Exception e) {
@@ -140,6 +155,110 @@ public class MonitorService extends AccessibilityService {
     @Override
     public void onInterrupt() {
 
+    }
+
+    private void startGestureArea() {
+        WindowManager mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        View leftView = new View(this);
+        View rightView = new View(this);
+
+        // Colored for debug
+        //leftView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
+        //rightView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
+
+        WindowManager.LayoutParams params= new WindowManager.LayoutParams(
+                getOverlayWidth(),
+                (int) (200 * getResources().getDisplayMetrics().density), //WindowManager.LayoutParams.WRAP_CONTENT,
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY : WindowManager.LayoutParams.TYPE_PHONE),
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+
+        params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+
+        leftView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                handleEvent(motionEvent);
+                return false;
+            }
+        });
+
+        rightView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                handleEvent(motionEvent);
+                return false;
+            }
+        });
+
+        mWindowManager.addView(leftView, params);
+
+        params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+        mWindowManager.addView(rightView, params);
+    }
+
+    private void handleEvent(MotionEvent motionEvent) {
+        final int action = motionEvent.getAction();
+
+        if (action == MotionEvent.ACTION_DOWN) {
+            gestureDistanceReached = false;
+            gestureTapX = motionEvent.getX();
+            gestureTapY = motionEvent.getY();
+            //vibrate();
+        } else if (action == MotionEvent.ACTION_UP) {
+            if (gestureDistanceReached) {
+                final double distance = getDistance(motionEvent.getX(), motionEvent.getY(), gestureTapX, gestureTapY);
+                if (pxToDp((float) distance) >= 40) {
+                    final double degree = getAbsDegree(gestureTapX, gestureTapY, motionEvent.getX(), motionEvent.getY());
+                    runAction(degree);
+                }
+            }
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            if (!gestureDistanceReached) {
+                double distance = getDistance(motionEvent.getX(), motionEvent.getY(), gestureTapX, gestureTapY);
+                if (pxToDp((float)distance) >= 80) {
+                    gestureDistanceReached = true;
+                    vibrate();
+                }
+            }
+        }
+    }
+
+    private void runAction(double degree) {
+        if (degree > 120)
+            performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+        else if (degree < 60)
+            performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+        else
+            performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
+    }
+
+    private float pxToDp(float px) {
+        final float density = getResources().getDisplayMetrics().density;
+        return px / density;
+    }
+
+    private double getDistance(double x1, double y1, double x2, double y2) {
+        return Math.hypot(y2 - y1, x2 - x1);
+    }
+
+    private double getAbsDegree(double x1, double y1, double x2, double y2) {
+        return Math.abs(Math.toDegrees(Math.atan2(x2 - x1, y2 - y1)));
+    }
+
+    // https://android.googlesource.com/platform/frameworks/support/+/2d9e33a/v4/java/android/support/v4/widget/ViewDragHelper.java#387
+    private int getOverlayWidth() {
+        final int EDGE_SIZE = 20; // dp
+        final float density = getResources().getDisplayMetrics().density;
+        return (int) (EDGE_SIZE * density + 0.5f);
+    }
+
+    private void vibrate() {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = {0, 10};
+        if (vibrator != null)
+            vibrator.vibrate(pattern, -1);
     }
 
     void dumpToChildren(AccessibilityNodeInfo nodeInfo) {
