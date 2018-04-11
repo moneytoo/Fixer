@@ -70,7 +70,7 @@ Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Andro
 
 ## ToDo
 
-*    Samsung: DNS changer - base it on https://github.com/fusionjack/Adhell3
+*    Samsung: DNS changer - base it on Adhell
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``
