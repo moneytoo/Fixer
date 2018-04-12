@@ -10,6 +10,10 @@ Fixer a suite of tweaks that works around some features I find annoying.
 *    All-in-1: Integrating all tweaks to one app is more efficient, single running service
 *    Opportunity for me to learn more and be creative in finding work arounds
 
+## Download
+
+Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the release section.
+
 ## Setup
 
 Root access (or Xposed) is not required, it's just an alternative.
