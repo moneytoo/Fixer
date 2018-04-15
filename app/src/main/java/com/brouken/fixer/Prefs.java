@@ -12,11 +12,11 @@ public class Prefs {
 
     SharedPreferences mSharedPreferences;
 
-    private boolean pref_no_safe_volume_warning = true;
-    private boolean pref_keyboard_switching = true;
-    private boolean pref_media_volume_default = true;
-    private boolean pref_gms_location = true;
-    private boolean pref_side_screen_gestures = true;
+    private boolean pref_no_safe_volume_warning = false;
+    private boolean pref_keyboard_switching = false;
+    private boolean pref_media_volume_default = false;
+    private boolean pref_gms_location = false;
+    private boolean pref_side_screen_gestures = false;
     private boolean pref_samsung_led_dnd = false;
     private boolean pref_samsung_popups = false;
 
