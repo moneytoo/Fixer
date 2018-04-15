@@ -63,6 +63,20 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="Fort Sammy">
+
+        <EditTextPreference
+            android:key="pref_sammy_key"
+            android:title="License key" />
+
+        <EditTextPreference
+            android:key="pref_sammy_dns"
+            android:title="DNS"
+            android:summary="Device admin and key"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="Shortcuts">
 
         <Preference
@@ -81,6 +95,11 @@
         <Preference
             android:title="Accessibility">
             <intent android:action="android.settings.ACCESSIBILITY_SETTINGS" />
+        </Preference>
+
+        <Preference
+            android:key="pref_device_admin"
+            android:title="Device admin">
         </Preference>
 
     </PreferenceCategory>

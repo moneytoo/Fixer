@@ -1,13 +1,17 @@
 package com.brouken.fixer;
 
 import android.app.AlertDialog;
+import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -123,6 +127,44 @@ public class SettingsActivity extends PreferenceActivity {
                     return true;
                 }
             });
+
+            Preference deviceAdminPreference = findPreference("pref_device_admin");
+            deviceAdminPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    ComponentName mDeviceAdmin;
+                    mDeviceAdmin = new ComponentName(getActivity().getApplicationContext(), AdminReceiver.class);
+
+                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+                    //startActivityForResult(intent, 0);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+
+            EditTextPreference sammyDNSPreference = (EditTextPreference) findPreference("pref_sammy_dns");
+            sammyDNSPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String dns = (String) newValue;
+                    Sammy.setDNS(getActivity(), dns);
+                    return true;
+                }
+            });
+
+            EditTextPreference sammyKeyPreference = (EditTextPreference) findPreference("pref_sammy_key");
+            sammyKeyPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Sammy.setKey(getActivity(), (String) newValue);
+                    return true;
+                }
+            });
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            if (sharedPreferences.contains("sammy_license"))
+                sammyKeyPreference.setSummary("License status: " + sharedPreferences.getString("sammy_license", "unknown"));
 
         }
 

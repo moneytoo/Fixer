@@ -72,9 +72,13 @@ Description: Pie control without actual pie. Swipe from center of a left or righ
 Requirements: Accessibility<br>
 Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
 
+#### Since version 0.3
+
+### DNS changer
+Private, partly based on AdHell
+
 ## ToDo
 
-*    Samsung: DNS changer - base it on Adhell
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``
