@@ -19,7 +19,8 @@ Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the rel
 Root access (or Xposed) is not required, it's just an alternative.
 
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. If you're rooted, granting this permission is not necessary. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS``
-2. Enable Accessibility
+2. Run following before adding any account. (Required only for app disabler)<br>``adb shell dpm set-device-owner com.brouken.fixer/.AdminReceiver``
+3. Enable Accessibility
 
 WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
 
@@ -79,11 +80,11 @@ Private, partly based on AdHell
 
 ## ToDo
 
+*    WIP: App disabler/enabler - [DevicePolicyManager.setApplicationHidden()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean)))
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``
 *    Airplane mode switches only cellular network - ``settings put global airplane_mode_radios "cell"``
-*    (?) App disabler/enabler - [DevicePolicyManager.setPackagesSuspended()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setPackagesSuspended(android.content.ComponentName,%20java.lang.String[],%20boolean))
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
 
 #### When running Android O

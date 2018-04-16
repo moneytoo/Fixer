@@ -3,15 +3,20 @@ package com.brouken.fixer;
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +25,8 @@ import android.widget.Toast;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
+
+import java.util.List;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -166,6 +173,7 @@ public class SettingsActivity extends PreferenceActivity {
             if (sharedPreferences.contains("sammy_license"))
                 sammyKeyPreference.setSummary("License status: " + sharedPreferences.getString("sammy_license", "unknown"));
 
+            addToggles();
         }
 
         @Override
@@ -184,6 +192,46 @@ public class SettingsActivity extends PreferenceActivity {
                 RootTools.isAccessGiven();
             }*/
             return super.onOptionsItemSelected(item);
+        }
+
+        void addToggles() {
+            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
+            PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
+            preferenceCategory.setTitle("Enable/disable apps");
+
+            preferenceScreen.addPreference(preferenceCategory);
+
+            List<PackageInfo> packageInfos = getActivity().getPackageManager().getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            for (PackageInfo packageInfo : packageInfos) {
+                final String packageName = packageInfo.packageName;
+                if (packageName.equals("com.pandora.android") ||
+                        packageName.equals("com.xiaomi.hm.health") ||
+                        packageName.equals("com.alibaba.aliexpresshd")) {
+                    Preference preference = createToggle(packageName, packageInfo.applicationInfo.loadLabel(getActivity().getPackageManager()).toString());
+                    preferenceCategory.addPreference(preference);
+                }
+            }
+        }
+
+        Preference createToggle(String pkg, String name) {
+            Preference preference = new Preference(getContext());
+            preference.setKey(pkg);
+            preference.setTitle(name);
+
+            preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    ComponentName adminComponentName = new ComponentName(getActivity().getApplicationContext(), AdminReceiver.class);
+                    DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+                    boolean isAppHidden = devicePolicyManager.isApplicationHidden(adminComponentName, preference.getKey());
+                    devicePolicyManager.setApplicationHidden(adminComponentName, preference.getKey(), !isAppHidden);
+
+                    return true;
+                }
+            });
+
+            return preference;
         }
     }
 }
