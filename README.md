@@ -78,9 +78,13 @@ Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Andro
 ### DNS changer
 Private, partly based on AdHell
 
+### App disabler/enabler
+Description: Toggle state of few hard coded (my battery draining) apps. Uses [DevicePolicyManager.setApplicationHidden()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean))<br>
+Requirements: Device owner<br>
+Notes: Make it configurable. This is probably the same how Ice Box works.
+
 ## ToDo
 
-*    WIP: App disabler/enabler - [DevicePolicyManager.setApplicationHidden()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean)))
 *    Samsung: Keys light - ``button_key_light``
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``

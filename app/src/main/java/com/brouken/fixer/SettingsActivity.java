@@ -195,6 +195,10 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         void addToggles() {
+            DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
+            if (!devicePolicyManager.isDeviceOwnerApp(getActivity().getPackageName()))
+                return;
+
             PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
             PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
             preferenceCategory.setTitle("Enable/disable apps");
