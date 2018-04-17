@@ -17,6 +17,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
 
 import java.util.List;
+
+import static com.brouken.fixer.Utils.log;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -174,6 +177,16 @@ public class SettingsActivity extends PreferenceActivity {
                 sammyKeyPreference.setSummary("License status: " + sharedPreferences.getString("sammy_license", "unknown"));
 
             addToggles();
+
+            SwitchPreference sideScreenGesturesPreference = (SwitchPreference) findPreference("pref_side_screen_gestures");
+            sideScreenGesturesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    log("onPreferenceChange");
+                    getActivity().startService(new Intent(getActivity(), MonitorService.class));
+                    return true;
+                }
+            });
         }
 
         @Override

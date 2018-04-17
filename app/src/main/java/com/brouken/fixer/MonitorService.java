@@ -2,6 +2,7 @@ package com.brouken.fixer;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
@@ -30,6 +31,9 @@ public class MonitorService extends AccessibilityService {
     float gestureTapX;
     float gestureTapY;
 
+    private WindowManager mWindowManager;
+    private View mLeftView;
+    private View mRightView;
     boolean gestureDistanceReached = false;
 
     @Override
@@ -42,8 +46,7 @@ public class MonitorService extends AccessibilityService {
             mInterruption = new Interruption(this);
 
         // TODO: Disable in full screen (?)
-        if (mPrefs.isSideScreenGesturesEnabled())
-            startGestureArea();
+        startStopGestureArea();
     }
 
     @Override
@@ -158,11 +161,22 @@ public class MonitorService extends AccessibilityService {
 
     }
 
-    private void startGestureArea() {
-        WindowManager mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        log("onStartCommand");
 
-        View leftView = new View(this);
-        View rightView = new View(this);
+        mPrefs = new Prefs(this);
+
+        startStopGestureArea();
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void startGestureArea() {
+        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        mLeftView = new View(this);
+        mRightView = new View(this);
 
         // Colored for debug
         //leftView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
@@ -177,7 +191,7 @@ public class MonitorService extends AccessibilityService {
 
         params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
 
-        leftView.setOnTouchListener(new View.OnTouchListener() {
+        mLeftView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 handleEvent(motionEvent);
@@ -185,7 +199,7 @@ public class MonitorService extends AccessibilityService {
             }
         });
 
-        rightView.setOnTouchListener(new View.OnTouchListener() {
+        mRightView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 handleEvent(motionEvent);
@@ -193,10 +207,26 @@ public class MonitorService extends AccessibilityService {
             }
         });
 
-        mWindowManager.addView(leftView, params);
+        mWindowManager.addView(mLeftView, params);
 
         params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
-        mWindowManager.addView(rightView, params);
+        mWindowManager.addView(mRightView, params);
+    }
+
+    private void stopGestureArea() {
+        if (mWindowManager != null) {
+            if (mLeftView != null)
+                mWindowManager.removeView(mLeftView);
+            if (mRightView != null)
+                mWindowManager.removeView(mRightView);
+        }
+    }
+
+    private void startStopGestureArea() {
+        if (mPrefs.isSideScreenGesturesEnabled())
+            startGestureArea();
+        else
+            stopGestureArea();
     }
 
     private void handleEvent(MotionEvent motionEvent) {
