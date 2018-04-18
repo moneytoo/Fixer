@@ -89,6 +89,7 @@ Notes: Make it configurable. This is probably the same how Ice Box works.
 *    Samsung: Flashlight - ``torchlight_enable`` & ``torchlight_timeout``, https://play.google.com/store/apps/details?id=com.softdx.volumetorchlight
 *    Disable VoLTE icon - ``icon_blacklist=ims_volte``
 *    Airplane mode switches only cellular network - ``settings put global airplane_mode_radios "cell"``
+*    Automatic app backup to SD card
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
 
 #### When running Android O
