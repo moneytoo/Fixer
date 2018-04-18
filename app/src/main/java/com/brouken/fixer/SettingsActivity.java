@@ -21,7 +21,6 @@ import android.preference.SwitchPreference;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
@@ -64,18 +63,7 @@ public class SettingsActivity extends PreferenceActivity {
             sipPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent("android.intent.action.MAIN");
-                    intent.setComponent(new ComponentName("com.android.phone","com.android.phone.settings.PhoneAccountSettingsActivity"));
-                    try {
-                        startActivity(intent);
-                    } catch (Exception x) {
-                        try {
-                            intent.setComponent(new ComponentName("com.android.phone","com.android.phone.CallFeaturesSetting"));
-                            startActivity(intent);
-                        } catch (Exception xx) {
-                            Toast.makeText(getActivity(), "No activity found", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    Shortcuts.startSIP(getContext());
                     return true;
                 }
             });
@@ -84,13 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
             radioPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent("android.intent.action.MAIN");
-                    intent.setComponent(new ComponentName("com.android.settings","com.android.settings.RadioInfo"));
-                    try {
-                        startActivity(intent);
-                    } catch (Exception x) {
-                        Toast.makeText(getActivity(), "No activity found", Toast.LENGTH_SHORT).show();
-                    }
+                    Shortcuts.startRadio(getContext());
                     return true;
                 }
             });
@@ -178,15 +160,8 @@ public class SettingsActivity extends PreferenceActivity {
 
             addToggles();
 
-            SwitchPreference sideScreenGesturesPreference = (SwitchPreference) findPreference("pref_side_screen_gestures");
-            sideScreenGesturesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    log("onPreferenceChange");
-                    getActivity().startService(new Intent(getActivity(), MonitorService.class));
-                    return true;
-                }
-            });
+            registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
+            registerSwitchChangeToServiceUpdate("pref_media_volume_default");
         }
 
         @Override
@@ -205,6 +180,18 @@ public class SettingsActivity extends PreferenceActivity {
                 RootTools.isAccessGiven();
             }*/
             return super.onOptionsItemSelected(item);
+        }
+
+        void registerSwitchChangeToServiceUpdate(String pref) {
+            SwitchPreference switchPreference = (SwitchPreference) findPreference(pref);
+            switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    log("onPreferenceChange");
+                    getActivity().startService(new Intent(getActivity(), MonitorService.class));
+                    return true;
+                }
+            });
         }
 
         void addToggles() {
