@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.brouken.fixer.feature.Freezer;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
@@ -195,10 +196,6 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         void addToggles() {
-            DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-            if (!devicePolicyManager.isDeviceOwnerApp(getActivity().getPackageName()))
-                return;
-
             PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
             PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
             preferenceCategory.setTitle("Enable/disable apps");
@@ -218,24 +215,20 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         Preference createToggle(String pkg, String name) {
-            Preference preference = new Preference(getContext());
-            preference.setKey(pkg);
-            preference.setTitle(name);
+            SwitchPreference switchPreference = new SwitchPreference(getContext());
+            switchPreference.setKey(pkg);
+            switchPreference.setTitle(name);
+            switchPreference.setChecked(Freezer.isAppEnabled(getContext(), pkg));
 
-            preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    ComponentName adminComponentName = new ComponentName(getActivity().getApplicationContext(), AdminReceiver.class);
-                    DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-
-                    boolean isAppHidden = devicePolicyManager.isApplicationHidden(adminComponentName, preference.getKey());
-                    devicePolicyManager.setApplicationHidden(adminComponentName, preference.getKey(), !isAppHidden);
-
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    ((SwitchPreference) preference).setChecked(Freezer.switchAppState(getContext(), preference.getKey()));
                     return true;
                 }
             });
 
-            return preference;
+            return switchPreference;
         }
     }
 }
