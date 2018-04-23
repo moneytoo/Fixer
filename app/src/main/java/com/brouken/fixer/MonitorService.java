@@ -3,7 +3,6 @@ package com.brouken.fixer;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Build;

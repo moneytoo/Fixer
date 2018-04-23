@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.sec.MDM_FIREWALL"/>
     <!--<uses-permission android:name="com.samsung.android.knox.permission.KNOX_FIREWALL"/>-->
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -66,6 +68,10 @@
                 <action android:name="edm.intent.action.license.status" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".feature.AppBackupJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
     </application>
 

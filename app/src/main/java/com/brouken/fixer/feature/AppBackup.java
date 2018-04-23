@@ -1,6 +1,9 @@
 package com.brouken.fixer.feature;
 
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -18,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.brouken.fixer.Utils.log;
 
@@ -41,7 +45,7 @@ public class AppBackup {
         }
     }
 
-    public static void backupApps(Context context, String sd) {
+    public static boolean backupApps(Context context, String sd) {
         DocumentFile root = DocumentFile.fromTreeUri(context, Uri.parse(sd));
 
         DocumentFile apk = root.findFile(SD_CARD_FOLDER);
@@ -81,6 +85,7 @@ public class AppBackup {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     private static void copy(Context context, File input, Uri output) throws IOException {
@@ -93,5 +98,22 @@ public class AppBackup {
         while ((size = inStream.read(buf)) != -1) {
             outStream.write(buf, 0, size);
         }
+    }
+
+    public static void schedule(Context context) {
+        // DEBUG: adb shell cmd jobscheduler run -f com.brouken.fixer 0
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancelAll();
+        jobScheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, AppBackupJobService.class))
+                .setPersisted(true)
+                .setPeriodic(TimeUnit.HOURS.toMillis(8), TimeUnit.HOURS.toMillis(4))
+                .setRequiresDeviceIdle(true)
+                .setRequiresCharging(true)
+                .build());
+    }
+
+    public static void unschedule(Context context) {
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancelAll();
     }
 }

@@ -166,20 +166,19 @@ public class SettingsActivity extends PreferenceActivity {
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
             registerSwitchChangeToServiceUpdate("pref_media_volume_default");
 
-            Preference sdAccessPreference = findPreference("pref_sd_access");
-            sdAccessPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");
+            appBackupPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    AppBackup.setup(getActivity());
-                    return true;
-                }
-            });
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    boolean enable = (boolean) newValue;
+                    log("app backup: onPreferenceChange " + enable);
 
-            Preference backupNowPreference = findPreference("pref_backup_now");
-            backupNowPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    AppBackup.backupApps(getContext(), new Prefs(getContext()).getSdRoot());
+                    if (enable) {
+                        AppBackup.setup(getActivity());
+                    } else {
+                        AppBackup.unschedule(getContext());
+                    }
+
                     return true;
                 }
             });
@@ -259,6 +258,7 @@ public class SettingsActivity extends PreferenceActivity {
             log(uri.toString());
             Prefs prefs = new Prefs(this);
             prefs.setSdRoot(uri.toString());
+            AppBackup.schedule(this);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
