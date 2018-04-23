@@ -121,7 +121,7 @@ public class AppBackup extends AsyncTask<Void, Void, Boolean> {
         jobScheduler.cancelAll();
         jobScheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, AppBackupJobService.class))
                 .setPersisted(true)
-                .setPeriodic(TimeUnit.HOURS.toMillis(8), TimeUnit.HOURS.toMillis(4))
+                .setPeriodic(TimeUnit.HOURS.toMillis(24), TimeUnit.HOURS.toMillis(8))
                 .setRequiresDeviceIdle(true)
                 .setRequiresCharging(true)
                 .build());
