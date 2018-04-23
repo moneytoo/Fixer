@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.brouken.fixer"
-        minSdkVersion 23
+        minSdkVersion 24
         //targetSdkVersion 27
         targetSdkVersion 22
         versionCode 3
@@ -22,4 +22,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':RootShell')
     implementation project(':RootTools')
+
+    implementation 'com.android.support:appcompat-v7:27.1.1' // because of DocumentFile
 }

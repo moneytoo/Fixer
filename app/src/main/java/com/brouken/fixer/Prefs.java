@@ -20,6 +20,8 @@ public class Prefs {
     private boolean pref_samsung_led_dnd = false;
     private boolean pref_samsung_popups = false;
 
+    private String pref_sd_root = "";
+
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         loadSavedPreferences();
@@ -33,6 +35,15 @@ public class Prefs {
         pref_side_screen_gestures = mSharedPreferences.getBoolean("pref_side_screen_gestures", pref_side_screen_gestures);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
         pref_samsung_popups = mSharedPreferences.getBoolean("pref_samsung_popups", pref_samsung_popups);
+
+        pref_sd_root = mSharedPreferences.getString("pref_sd_root", pref_sd_root);
+    }
+
+    public void setSdRoot(String root) {
+        pref_sd_root = root;
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString("pref_sd_root", pref_sd_root);
+        editor.apply();
     }
 
     public boolean isNoSafeVolumeWarningEnabled() {
@@ -61,5 +72,9 @@ public class Prefs {
 
     public boolean isSamsungNoPopupsEnabled() {
         return pref_samsung_popups;
+    }
+
+    public String getSdRoot() {
+        return pref_sd_root;
     }
 }

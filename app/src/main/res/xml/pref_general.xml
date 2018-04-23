@@ -81,6 +81,10 @@
             android:key="pref_radio"
             android:title="Radio (Device info)" />
 
+        <Preference
+            android:key="pref_backup_now"
+            android:title="App backup (now)" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -94,6 +98,11 @@
         <Preference
             android:key="pref_device_admin"
             android:title="Device admin">
+        </Preference>
+
+        <Preference
+            android:key="pref_sd_access"
+            android:title="SD card access">
         </Preference>
 
     </PreferenceCategory>

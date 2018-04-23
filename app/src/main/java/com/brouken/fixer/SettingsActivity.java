@@ -1,14 +1,15 @@
 package com.brouken.fixer;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.brouken.fixer.feature.AppBackup;
 import com.brouken.fixer.feature.Freezer;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
@@ -163,6 +165,24 @@ public class SettingsActivity extends PreferenceActivity {
 
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
             registerSwitchChangeToServiceUpdate("pref_media_volume_default");
+
+            Preference sdAccessPreference = findPreference("pref_sd_access");
+            sdAccessPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    AppBackup.setup(getActivity());
+                    return true;
+                }
+            });
+
+            Preference backupNowPreference = findPreference("pref_backup_now");
+            backupNowPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    AppBackup.backupApps(getContext(), new Prefs(getContext()).getSdRoot());
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -230,6 +250,17 @@ public class SettingsActivity extends PreferenceActivity {
 
             return switchPreference;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppBackup.REQUEST_SD_ACCESS && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            log(uri.toString());
+            Prefs prefs = new Prefs(this);
+            prefs.setSdRoot(uri.toString());
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
