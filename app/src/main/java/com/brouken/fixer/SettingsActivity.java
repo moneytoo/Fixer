@@ -256,6 +256,7 @@ public class SettingsActivity extends PreferenceActivity {
         if (requestCode == AppBackup.REQUEST_SD_ACCESS && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             log(uri.toString());
+            getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             Prefs prefs = new Prefs(this);
             prefs.setSdRoot(uri.toString());
             AppBackup.schedule(this);

@@ -10,10 +10,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.support.v4.provider.DocumentFile;
+
+import com.brouken.fixer.Prefs;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,11 +28,21 @@ import java.util.concurrent.TimeUnit;
 
 import static com.brouken.fixer.Utils.log;
 
-public class AppBackup {
+public class AppBackup extends AsyncTask<Void, Void, Boolean> {
 
     public static final int REQUEST_SD_ACCESS = 10;
-
     private static final String SD_CARD_FOLDER = "apk";
+
+    private final Context mContext;
+
+    public AppBackup(Context context) {
+        mContext = context.getApplicationContext();
+    }
+
+    @Override
+    protected Boolean doInBackground(final Void... values) {
+        return backupApps();
+    }
 
     public static void setup(Activity activity) {
         StorageManager storageManager = (StorageManager) activity.getSystemService(Context.STORAGE_SERVICE);
@@ -45,14 +58,16 @@ public class AppBackup {
         }
     }
 
-    public static boolean backupApps(Context context, String sd) {
-        DocumentFile root = DocumentFile.fromTreeUri(context, Uri.parse(sd));
+    private boolean backupApps() {
+        String sd = (new Prefs(mContext)).getSdRoot();
+
+        DocumentFile root = DocumentFile.fromTreeUri(mContext, Uri.parse(sd));
 
         DocumentFile apk = root.findFile(SD_CARD_FOLDER);
         if (apk == null)
             apk = root.createDirectory(SD_CARD_FOLDER);
 
-        PackageManager packageManager = context.getPackageManager();
+        PackageManager packageManager = mContext.getPackageManager();
         List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo applicationInfo = packageInfo.applicationInfo;
@@ -62,9 +77,9 @@ public class AppBackup {
                 continue;
             }
 
-            final String name = applicationInfo.loadLabel(packageManager).toString();
-            final String pkg = applicationInfo.packageName;
-            final String version = packageInfo.versionName;
+            final String name = applicationInfo.loadLabel(packageManager).toString().trim();
+            final String pkg = applicationInfo.packageName.trim();
+            final String version = packageInfo.versionName.trim();
             final int versionCode = packageInfo.versionCode;
 
             final String filename = name + "-" + pkg + "-" + version + "-" + versionCode + ".apk";
@@ -80,7 +95,7 @@ public class AppBackup {
             log(filename);
 
             try {
-                copy(context, in, out.getUri());
+                copy(mContext, in, out.getUri());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -88,7 +103,7 @@ public class AppBackup {
         return true;
     }
 
-    private static void copy(Context context, File input, Uri output) throws IOException {
+    private void copy(Context context, File input, Uri output) throws IOException {
         ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(output, "w");
         FileOutputStream outStream = new FileOutputStream(pfd.getFileDescriptor());
         InputStream inStream = new FileInputStream(input);
