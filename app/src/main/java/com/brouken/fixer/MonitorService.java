@@ -245,12 +245,17 @@ public class MonitorService extends AccessibilityService {
                 }
             }
         } else if (action == MotionEvent.ACTION_MOVE) {
+            final double distance = getDistance(motionEvent.getX(), motionEvent.getY(), gestureTapX, gestureTapY);
+            final float distanceDp = pxToDp((float)distance);
+
             if (!gestureDistanceReached) {
-                double distance = getDistance(motionEvent.getX(), motionEvent.getY(), gestureTapX, gestureTapY);
-                if (pxToDp((float)distance) >= 80) {
+                if (distanceDp >= 80) {
                     gestureDistanceReached = true;
                     vibrate();
                 }
+            } else {
+                if (distanceDp < 40)
+                    gestureDistanceReached = false;
             }
         }
     }
