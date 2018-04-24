@@ -86,7 +86,7 @@ Notes: Make it configurable. This is probably the same how Ice Box works.
 ### App backup
 Description: Automatic backup all installed/updated apps (apks) to SD card<br>
 Requirements: SD card<br>
-Notes: Runs daily when on charger, creates ``apk`` folder on SD card (removable only - for now)
+Notes: Creates ``apk`` folder on SD card (removable only - for now)
 
 ## ToDo
 

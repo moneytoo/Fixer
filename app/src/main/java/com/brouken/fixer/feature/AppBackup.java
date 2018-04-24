@@ -28,20 +28,29 @@ import java.util.concurrent.TimeUnit;
 
 import static com.brouken.fixer.Utils.log;
 
-public class AppBackup extends AsyncTask<Void, Void, Boolean> {
+public class AppBackup extends AsyncTask<String, Void, Boolean> {
 
     public static final int REQUEST_SD_ACCESS = 10;
     private static final String SD_CARD_FOLDER = "apk";
 
     private final Context mContext;
+    private PackageManager mPackageManager;
+    private DocumentFile apkDir;
 
     public AppBackup(Context context) {
         mContext = context.getApplicationContext();
+        mPackageManager = mContext.getPackageManager();
+        prepareDir();
     }
 
     @Override
-    protected Boolean doInBackground(final Void... values) {
-        return backupApps();
+    protected Boolean doInBackground(final String... pkgs) {
+        if (pkgs == null || pkgs.length < 1)
+            return backupApps();
+        else {
+            backupApp(pkgs[0]);
+            return true;
+        }
     }
 
     public static void setup(Activity activity) {
@@ -58,49 +67,62 @@ public class AppBackup extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
-    private boolean backupApps() {
+    private void prepareDir() {
         String sd = (new Prefs(mContext)).getSdRoot();
 
         DocumentFile root = DocumentFile.fromTreeUri(mContext, Uri.parse(sd));
 
-        DocumentFile apk = root.findFile(SD_CARD_FOLDER);
-        if (apk == null)
-            apk = root.createDirectory(SD_CARD_FOLDER);
+        apkDir = root.findFile(SD_CARD_FOLDER);
+        if (apkDir == null)
+            apkDir = root.createDirectory(SD_CARD_FOLDER);
+    }
 
-        PackageManager packageManager = mContext.getPackageManager();
-        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
+    private boolean backupApps() {
+        List<PackageInfo> packageInfos = mPackageManager.getInstalledPackages(0);
         for (PackageInfo packageInfo : packageInfos) {
-            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-
-            if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0 &&
-                    (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
-                continue;
-            }
-
-            final String name = applicationInfo.loadLabel(packageManager).toString().trim();
-            final String pkg = applicationInfo.packageName.trim();
-            final String version = packageInfo.versionName.trim();
-            final int versionCode = packageInfo.versionCode;
-
-            final String filename = name + "-" + pkg + "-" + version + "-" + versionCode + ".apk";
-
-            DocumentFile out = apk.findFile(filename);
-            if (out != null)
-                continue;
-
-            // getMimeTypeFromExtension
-            out = apk.createFile("application/vnd.android.package-archive", filename);
-            File in = new File(applicationInfo.publicSourceDir);
-
-            log(filename);
-
-            try {
-                copy(mContext, in, out.getUri());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            backupApp(packageInfo);
         }
         return true;
+    }
+
+    private void backupApp(PackageInfo packageInfo) {
+        ApplicationInfo applicationInfo = packageInfo.applicationInfo;
+
+        if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0 &&
+                (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
+            return;
+        }
+
+        final String name = applicationInfo.loadLabel(mPackageManager).toString().trim();
+        final String pkg = applicationInfo.packageName.trim();
+        final String version = packageInfo.versionName.trim();
+        final int versionCode = packageInfo.versionCode;
+
+        final String filename = name + "-" + pkg + "-" + version + "-" + versionCode + ".apk";
+
+        DocumentFile out = apkDir.findFile(filename);
+        if (out != null)
+            return;
+
+        // getMimeTypeFromExtension
+        out = apkDir.createFile("application/vnd.android.package-archive", filename);
+        File in = new File(applicationInfo.publicSourceDir);
+
+        log(filename);
+
+        try {
+            copy(mContext, in, out.getUri());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void backupApp(String pkg) {
+        try {
+            backupApp(mPackageManager.getPackageInfo(pkg, 0));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void copy(Context context, File input, Uri output) throws IOException {
@@ -123,7 +145,7 @@ public class AppBackup extends AsyncTask<Void, Void, Boolean> {
         jobScheduler.cancelAll();
         jobScheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, AppBackupJobService.class))
                 .setPersisted(true)
-                .setPeriodic(TimeUnit.HOURS.toMillis(24), TimeUnit.HOURS.toMillis(8))
+                .setPeriodic(TimeUnit.DAYS.toMillis(1), TimeUnit.DAYS.toMillis(1))
                 .setRequiresDeviceIdle(true)
                 .setRequiresCharging(true)
                 .build());

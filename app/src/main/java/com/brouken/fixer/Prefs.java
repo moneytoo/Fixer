@@ -19,6 +19,7 @@ public class Prefs {
     private boolean pref_side_screen_gestures = false;
     private boolean pref_samsung_led_dnd = false;
     private boolean pref_samsung_popups = false;
+    private boolean pref_app_backup = false;
 
     private String pref_sd_root = "";
 
@@ -35,6 +36,7 @@ public class Prefs {
         pref_side_screen_gestures = mSharedPreferences.getBoolean("pref_side_screen_gestures", pref_side_screen_gestures);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
         pref_samsung_popups = mSharedPreferences.getBoolean("pref_samsung_popups", pref_samsung_popups);
+        pref_app_backup = mSharedPreferences.getBoolean("pref_app_backup", pref_app_backup);
 
         pref_sd_root = mSharedPreferences.getString("pref_sd_root", pref_sd_root);
     }
@@ -76,5 +78,9 @@ public class Prefs {
 
     public String getSdRoot() {
         return pref_sd_root;
+    }
+
+    public boolean isAppBackupEnabled() {
+        return pref_app_backup;
     }
 }
