@@ -65,4 +65,9 @@ public class Freezer {
             return false;
         }
     }
+
+    public static void launchAppIfEnabled(Context context, String pkg) {
+        if (isAppEnabled(context, pkg))
+            context.startActivity(context.getPackageManager().getLaunchIntentForPackage(pkg));
+    }
 }

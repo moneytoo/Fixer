@@ -83,6 +83,17 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".feature.FreezerReceiver"
+            android:exported="true"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <data android:scheme="package" android:sspPrefix="com.pandora.android" />
+                <data android:scheme="package" android:sspPrefix="com.xiaomi.hm.health" />
+                <data android:scheme="package" android:sspPrefix="com.alibaba.aliexpresshd" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
