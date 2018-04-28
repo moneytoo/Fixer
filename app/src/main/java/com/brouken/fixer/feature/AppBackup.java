@@ -99,8 +99,8 @@ public class AppBackup extends AsyncTask<String, Void, Boolean> {
         final int versionCode = packageInfo.versionCode;
 
         String filename = name + "-" + pkg + "-" + version + "-" + versionCode + ".apk";
-        // TODO: Hack, find proper solution
-        filename = filename.replace(":", "_");
+        // Because of Win FS limitations
+        filename = filename.replaceAll("[?<>\\:*|\"]", "_");
 
         DocumentFile out = apkDir.findFile(filename);
         if (out != null)
