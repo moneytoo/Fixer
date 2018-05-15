@@ -229,6 +229,7 @@ public class SettingsActivity extends PreferenceActivity {
                         packageName.equals("com.alibaba.aliexpresshd")) {
                     Preference preference = createToggle(packageName, packageInfo.applicationInfo.loadLabel(getActivity().getPackageManager()).toString());
                     preferenceCategory.addPreference(preference);
+                    ((SwitchPreference)preference).setChecked(packageInfo.applicationInfo.enabled);
                 }
             }
         }
@@ -237,7 +238,6 @@ public class SettingsActivity extends PreferenceActivity {
             SwitchPreference switchPreference = new SwitchPreference(getContext());
             switchPreference.setKey(pkg);
             switchPreference.setTitle(name);
-            switchPreference.setChecked(Freezer.isAppEnabled(getContext(), pkg));
 
             switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
