@@ -295,32 +295,4 @@ public class MonitorService extends AccessibilityService {
         if (vibrator != null)
             vibrator.vibrate(pattern, -1);
     }
-
-    void dumpToChildren(AccessibilityNodeInfo nodeInfo) {
-        log(nodeInfo.toString());
-
-        int count = nodeInfo.getChildCount();
-        //log("childCount=" + count);
-
-        for (int i = 0; i < count; i++) {
-            AccessibilityNodeInfo child = nodeInfo.getChild(i);
-
-            if (child == null)
-                continue;
-
-            dumpToChildren(child);
-
-            CharSequence sequence = child.getText();
-            if (sequence != null) {
-                String text = sequence.toString();
-                /*
-                if (text.startsWith("Search or type web")) {
-                    //child.setText("OMG it works!");
-                    child.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
-                }
-                */
-                //log(text);
-            }
-        }
-    }
 }
