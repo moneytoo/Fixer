@@ -226,6 +226,7 @@ public class SettingsActivity extends PreferenceActivity {
                 final String packageName = packageInfo.packageName;
                 if (packageName.equals("com.pandora.android") ||
                         packageName.equals("com.xiaomi.hm.health") ||
+                        packageName.equals("com.spotify.music") ||
                         packageName.equals("com.alibaba.aliexpresshd")) {
                     Preference preference = createToggle(packageName, packageInfo.applicationInfo.loadLabel(getActivity().getPackageManager()).toString());
                     preferenceCategory.addPreference(preference);
