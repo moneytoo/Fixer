@@ -4,6 +4,5 @@
     android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms, com.android.settings"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:canRetrieveWindowContent="true"
-    android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents|flagRetrieveInteractiveWindows|flagReportViewIds"
-    android:canRequestFilterKeyEvents="true"
+    android:accessibilityFlags="flagIncludeNotImportantViews|flagRetrieveInteractiveWindows|flagReportViewIds"
     xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -25,9 +25,6 @@ import android.view.MenuItem;
 
 import com.brouken.fixer.feature.AppBackup;
 import com.brouken.fixer.feature.Freezer;
-import com.stericson.RootShell.execution.Command;
-import com.stericson.RootShell.execution.Shell;
-import com.stericson.RootTools.RootTools;
 
 import java.util.List;
 
@@ -80,49 +77,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            Preference gmsPreference = findPreference("pref_gms_location_persistent");
-            gmsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    try {
-                        RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
-                                new Command(0, false, "pm disable com.google.android.gms/com.google.android.location.settings.LocationSettingsCheckerActivity") {
-                                    String output = "";
-
-                                    @Override
-                                    public void commandCompleted(int id, int exitcode) {
-                                        super.commandCompleted(id, exitcode);
-
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                                builder.setMessage(output);
-                                                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                                dialogInterface.cancel();
-                                                            }
-                                                        });
-                                                AlertDialog dialog = builder.create();
-                                                dialog.show();
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void commandOutput(int id, String line) {
-                                        super.commandOutput(id, line);
-                                        output += line + "\n";
-                                    }
-                                });
-                    } catch (Exception x) {
-
-                    }
-                    return true;
-                }
-            });
-
             Preference deviceAdminPreference = findPreference("pref_device_admin");
             deviceAdminPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -164,7 +118,6 @@ public class SettingsActivity extends PreferenceActivity {
             addToggles();
 
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
-            registerSwitchChangeToServiceUpdate("pref_media_volume_default");
 
             SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");
             appBackupPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

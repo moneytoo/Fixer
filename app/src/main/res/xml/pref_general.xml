@@ -7,12 +7,7 @@
         <SwitchPreference
             android:key="pref_no_safe_volume_warning"
             android:title="No safe volume warning"
-            android:summary="Root or WRITE_SECURE_SETTINGS" />
-
-        <SwitchPreference
-            android:key="pref_media_volume_default"
-            android:title="Media volume by default"
-            android:summary="Accessibility" />
+            android:summary="WRITE_SECURE_SETTINGS" />
 
     </PreferenceCategory>
 
@@ -22,17 +17,12 @@
         <SwitchPreference
             android:key="pref_keyboard_switching"
             android:title="Hacker's Keyboard only in Termux"
-            android:summary="Accessibility and (root or WRITE_SECURE_SETTINGS)" />
+            android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
 
         <SwitchPreference
             android:key="pref_gms_location"
             android:title="No location dialog in GM"
             android:summary="Accessibility" />
-
-        <Preference
-            android:key="pref_gms_location_persistent"
-            android:title="No location dialog in GM"
-            android:summary="Root (one time setup)" />
 
         <SwitchPreference
             android:key="pref_side_screen_gestures"
@@ -52,7 +42,7 @@
         <SwitchPreference
             android:key="pref_samsung_led_dnd"
             android:title="No LED in DnD"
-            android:summary="Root or targetSdk &lt;= 22" />
+            android:summary="TargetSdk &lt;= 22" />
 
         <SwitchPreference
             android:key="pref_samsung_popups"

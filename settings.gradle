@@ -1,1 +1,1 @@
-include ':app', ':RootShell', ':RootTools'
+include ':app'

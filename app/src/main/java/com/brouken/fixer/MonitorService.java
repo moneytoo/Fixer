@@ -128,34 +128,6 @@ public class MonitorService extends AccessibilityService {
     }
 
     @Override
-    protected boolean onKeyEvent(KeyEvent event) {
-
-        if (mPrefs.isMediaVolumeDefaultEnabled()) {
-            //log("onKeyEvent " + event.toString());
-            final int keyCode = event.getKeyCode();
-
-            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-
-                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                int callState = telephonyManager.getCallState();
-
-                Object stream = -1;
-                if (callState == TelephonyManager.CALL_STATE_IDLE)
-                    stream = AudioManager.STREAM_MUSIC;
-
-                try {
-                    audioManager.getClass().getMethod("forceVolumeControlStream", new Class[]{Integer.TYPE}).invoke(audioManager, new Object[]{stream});
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return super.onKeyEvent(event);
-    }
-
-    @Override
     public void onInterrupt() {
 
     }

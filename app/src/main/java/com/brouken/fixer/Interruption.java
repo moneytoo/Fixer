@@ -9,10 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.provider.Settings;
 
-import com.stericson.RootShell.execution.Command;
-import com.stericson.RootShell.execution.Shell;
-import com.stericson.RootTools.RootTools;
-
 import static com.brouken.fixer.Utils.hasPermission;
 import static com.brouken.fixer.Utils.log;
 
@@ -54,16 +50,6 @@ public class Interruption {
                 Settings.System.putInt(contentResolver, "led_indicator_voice_recording", state);
             }
             catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else if (RootTools.isRootAvailable()) {
-            try {
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(new Command(0, false, "settings put system led_indicator_charing " + state));
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(new Command(0, false, "settings put system led_indicator_low_battery " + state));
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(new Command(0, false, "settings put system led_indicator_missed_event " + state));
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(new Command(0, false, "settings put system led_indicator_voice_recording " + state));
-            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

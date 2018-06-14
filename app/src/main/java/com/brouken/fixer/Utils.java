@@ -7,10 +7,6 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.stericson.RootShell.execution.Command;
-import com.stericson.RootShell.execution.Shell;
-import com.stericson.RootTools.RootTools;
-
 public class Utils {
 
     public static void log(String text) {
@@ -37,15 +33,6 @@ public class Utils {
                 e.printStackTrace();
             }
         }
-        else if (RootTools.isRootAvailable()) {
-            try {
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
-                        new Command(0, false, "settings put global audio_safe_volume_state 2"));
-                //RootTools.getShell(true).add(command);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static void changeIME(Context context, boolean temporaryIME) {
@@ -69,9 +56,6 @@ public class Utils {
         try {
             if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
                 Settings.Secure.putString(context.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD, ime);
-            } else if (RootTools.isRootAvailable()) {
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(
-                        new Command(0, false, "settings put secure default_input_method " + ime));
             }
         }
         catch (Exception e) {

@@ -14,7 +14,6 @@ public class Prefs {
 
     private boolean pref_no_safe_volume_warning = false;
     private boolean pref_keyboard_switching = false;
-    private boolean pref_media_volume_default = false;
     private boolean pref_gms_location = false;
     private boolean pref_side_screen_gestures = false;
     private boolean pref_samsung_led_dnd = false;
@@ -31,7 +30,6 @@ public class Prefs {
     private void loadSavedPreferences() {
         pref_no_safe_volume_warning = mSharedPreferences.getBoolean("pref_no_safe_volume_warning", pref_no_safe_volume_warning);
         pref_keyboard_switching = mSharedPreferences.getBoolean("pref_keyboard_switching", pref_keyboard_switching);
-        pref_media_volume_default = mSharedPreferences.getBoolean("pref_media_volume_default", pref_media_volume_default);
         pref_gms_location = mSharedPreferences.getBoolean("pref_gms_location", pref_gms_location);
         pref_side_screen_gestures = mSharedPreferences.getBoolean("pref_side_screen_gestures", pref_side_screen_gestures);
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
@@ -54,10 +52,6 @@ public class Prefs {
 
     public boolean isKeyboardSwitchingEnabled() {
         return pref_keyboard_switching;
-    }
-
-    public boolean isMediaVolumeDefaultEnabled() {
-        return pref_media_volume_default;
     }
 
     public boolean isGMSNoLocationEnabled() {

@@ -7,9 +7,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import com.brouken.fixer.AdminReceiver;
-import com.stericson.RootShell.execution.Command;
-import com.stericson.RootShell.execution.Shell;
-import com.stericson.RootTools.RootTools;
 
 public class Freezer {
 
@@ -26,35 +23,10 @@ public class Freezer {
         }
     }
 
-    private static class Root {
-        private static boolean switchAppState(Context context, String pkg) {
-            try {
-                boolean enabled = isAppEnabled(context, pkg);
-                String newState;
-
-                if (enabled) {
-                    newState = "disable";
-                } else {
-                    newState = "enable";
-                }
-
-                RootTools.getShell(true, Shell.ShellContext.SYSTEM_APP).add(new Command(0, false,
-                        "pm " + newState + " " + pkg));
-
-                return !enabled;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-    }
-
     public static boolean switchAppState(Context context, String pkg) {
-        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        if (devicePolicyManager.isDeviceOwnerApp(context.getPackageName()))
+        //DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        //if (devicePolicyManager.isDeviceOwnerApp(context.getPackageName()))
             return DeviceOwner.switchAppState(context, pkg);
-        else
-            return Root.switchAppState(context, pkg);
     }
 
     public static boolean isAppEnabled(Context context, String pkg) {
