@@ -63,6 +63,11 @@
             android:title="DNS"
             android:summary="Device admin and key"/>
 
+        <SwitchPreference
+            android:key="pref_sammy_power_wakeup"
+            android:title="Wakeup on power"
+            android:summary="Device admin and key" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

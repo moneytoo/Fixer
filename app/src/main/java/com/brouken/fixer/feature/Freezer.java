@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import com.brouken.fixer.AdminReceiver;
+import com.brouken.fixer.Sammy;
 
 public class Freezer {
 
@@ -24,9 +25,11 @@ public class Freezer {
     }
 
     public static boolean switchAppState(Context context, String pkg) {
-        //DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        //if (devicePolicyManager.isDeviceOwnerApp(context.getPackageName()))
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        if (devicePolicyManager.isDeviceOwnerApp(context.getPackageName()))
             return DeviceOwner.switchAppState(context, pkg);
+        else
+            return Sammy.switchAppState(context, pkg);
     }
 
     public static boolean isAppEnabled(Context context, String pkg) {

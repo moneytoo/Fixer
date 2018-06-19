@@ -11,8 +11,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-permission android:name="android.permission.sec.MDM_FIREWALL"/>
-    <!--<uses-permission android:name="com.samsung.android.knox.permission.KNOX_FIREWALL"/>-->
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_FIREWALL"/>
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING"/>
+    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -65,7 +66,7 @@
             android:name=".SammyReceiver"
             android:enabled="true" >
             <intent-filter>
-                <action android:name="edm.intent.action.license.status" />
+                <action android:name="com.samsung.android.knox.intent.action.LICENSE_STATUS" />
             </intent-filter>
         </receiver>
 
@@ -91,6 +92,7 @@
                 <data android:scheme="package" android:sspPrefix="com.pandora.android" />
                 <data android:scheme="package" android:sspPrefix="com.xiaomi.hm.health" />
                 <data android:scheme="package" android:sspPrefix="com.alibaba.aliexpresshd" />
+                <data android:scheme="package" android:sspPrefix="com.spotify.music" />
             </intent-filter>
         </receiver>
 

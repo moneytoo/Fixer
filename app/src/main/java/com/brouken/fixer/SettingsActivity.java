@@ -1,10 +1,8 @@
 package com.brouken.fixer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -132,6 +130,17 @@ public class SettingsActivity extends PreferenceActivity {
                         AppBackup.unschedule(getContext());
                     }
 
+                    return true;
+                }
+            });
+
+            SwitchPreference sammyWakeupOnPowerStatePreference = (SwitchPreference) findPreference("pref_sammy_power_wakeup");
+            sammyWakeupOnPowerStatePreference.setChecked(Sammy.isWakeupOnPowerStateEnabled());
+            sammyWakeupOnPowerStatePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    boolean enable = (boolean) newValue;
+                    Sammy.setWakeupOnPowerState(enable);
                     return true;
                 }
             });
