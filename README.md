@@ -17,7 +17,7 @@ Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the rel
 ## Setup
 
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS``
-2. Run following before adding any account. (Required only for app disabler)<br>``adb shell dpm set-device-owner com.brouken.fixer/.AdminReceiver``
+2. Run following before adding any account. (Required only for app disabler)<br>``adb shell dpm set-device-owner com.brouken.fixer/.AdminReceiver``<br>(Possible issues on Samsung devices running Android 8 (?) - locking workspace, requiring factory reset!)
 3. Enable Accessibility
 
 WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
@@ -28,11 +28,6 @@ WARNING: There are no checks for required permissions or runtime applying of cha
 Description: <br>
 Requirements: WRITE_SECURE_SETTINGS permission<br>
 Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-disable-the-high-volume-warning-without-root/
-
-### Media volume by default
-Description: <br>
-Requirements: Accessibility<br>
-Notes: Based on https://github.com/KrongKrongPadakPadak/mvo; Unsure Android P compatibility because of the use of non-public API however P already has media as default stream
 
 ### Hacker's Keyboard only in Termux
 Description: Use Gboard as default IME, switch to Hacker's Keyboard in Termux<br>
@@ -85,6 +80,9 @@ Notes: Make it configurable. This is probably the same how Ice Box works.
 Description: Automatic backup all installed/updated apps (apks) to SD card<br>
 Requirements: SD card<br>
 Notes: Creates ``apk`` folder on SD card (removable only - for now)
+
+### Keep screen off on power events
+Private, uses [this](https://seap.samsung.com/api-references/android-customization/reference/android/app/enterprise/knoxcustom/SettingsManager.html#setScreenWakeupOnPowerState(boolean))
 
 ## ToDo
 
