@@ -87,7 +87,7 @@ Private, uses [this](https://seap.samsung.com/api-references/android-customizati
 ## ToDo
 
 *    Samsung: Keys light - ``adb shell settings put system button_key_light 0``
-*    Disable VoLTE icon - ``adb shell settings put secure icon_blacklist ims_volte,rotate``
+*    Disable VoLTE icon - ``adb shell settings put secure icon_blacklist ims_volte,rotate,headset``
 *    Airplane mode switches only cellular network - ``adb shell settings put global airplane_mode_radios "cell"``
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
 
