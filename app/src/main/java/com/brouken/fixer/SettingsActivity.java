@@ -127,12 +127,12 @@ public class SettingsActivity extends PreferenceActivity {
             });
 
             SwitchPreference sammyWakeupOnPowerStatePreference = (SwitchPreference) findPreference("pref_sammy_power_wakeup");
-            sammyWakeupOnPowerStatePreference.setChecked(Sammy.isWakeupOnPowerStateEnabled());
+            sammyWakeupOnPowerStatePreference.setChecked(!Sammy.isWakeupOnPowerStateEnabled());
             sammyWakeupOnPowerStatePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     boolean enable = (boolean) newValue;
-                    Sammy.setWakeupOnPowerState(enable);
+                    Sammy.setWakeupOnPowerState(!enable);
                     return true;
                 }
             });

@@ -65,7 +65,7 @@
 
         <SwitchPreference
             android:key="pref_sammy_power_wakeup"
-            android:title="Wakeup on power"
+            android:title="No wake on power"
             android:summary="Device admin and key" />
 
     </PreferenceCategory>
