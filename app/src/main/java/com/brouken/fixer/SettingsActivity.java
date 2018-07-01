@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -134,6 +136,21 @@ public class SettingsActivity extends PreferenceActivity {
                     return true;
                 }
             });
+
+            final boolean removeAccessibility = Utils.isAccessibilitySettingsEnabled(this.getContext());
+            final boolean removeAdmin = Utils.isDeviceAdminEnabled(this.getContext());
+
+            PreferenceCategory categorySetup = (PreferenceCategory) findPreference("pref_setup");
+
+            if (removeAccessibility)
+                categorySetup.removePreference(findPreference("pref_accessibility"));
+            if (removeAdmin)
+                categorySetup.removePreference(findPreference("pref_device_admin"));
+
+            if (removeAccessibility && removeAdmin) {
+                PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
+                preferenceScreen.removePreference(findPreference("pref_setup"));
+            }
         }
 
         @Override

@@ -1,10 +1,12 @@
 package com.brouken.fixer;
 
 import android.Manifest;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class Utils {
@@ -61,5 +63,44 @@ public class Utils {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isAccessibilitySettingsEnabled(Context context) {
+        int accessibilityEnabled = 0;
+        final String service = context.getPackageName() + "/" + MonitorService.class.getCanonicalName();
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(
+                    context.getApplicationContext().getContentResolver(),
+                    android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+        if (accessibilityEnabled == 1) {
+            String settingValue = Settings.Secure.getString(
+                    context.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                mStringColonSplitter.setString(settingValue);
+                while (mStringColonSplitter.hasNext()) {
+                    String accessibilityService = mStringColonSplitter.next();
+
+                    if (accessibilityService.equalsIgnoreCase(service)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isDeviceAdminEnabled(Context context) {
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getApplicationContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName deviceAdmin = new ComponentName(context.getApplicationContext(), AdminReceiver.class);
+        if (devicePolicyManager.isAdminActive(deviceAdmin))
+            return true;
+        return false;
     }
 }

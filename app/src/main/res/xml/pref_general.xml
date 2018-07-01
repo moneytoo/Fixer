@@ -90,10 +90,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Setup">
+        android:title="Setup"
+        android:key="pref_setup">
 
         <Preference
-            android:title="Accessibility">
+            android:title="Accessibility"
+            android:key="pref_accessibility">
             <intent android:action="android.settings.ACCESSIBILITY_SETTINGS" />
         </Preference>
 
