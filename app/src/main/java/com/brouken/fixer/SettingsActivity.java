@@ -5,26 +5,19 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.brouken.fixer.feature.AppBackup;
-import com.brouken.fixer.feature.Freezer;
-
-import java.util.List;
 
 import static com.brouken.fixer.Utils.log;
 
@@ -84,7 +77,6 @@ public class SettingsActivity extends PreferenceActivity {
 
                     Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                     intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-                    //startActivityForResult(intent, 0);
                     startActivity(intent);
                     return true;
                 }
@@ -112,8 +104,6 @@ public class SettingsActivity extends PreferenceActivity {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             if (sharedPreferences.contains("sammy_license"))
                 sammyKeyPreference.setSummary("License status: " + sharedPreferences.getString("sammy_license", "unknown"));
-
-            addToggles();
 
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
 
@@ -158,9 +148,7 @@ public class SettingsActivity extends PreferenceActivity {
             if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
-            }/* else if (id == R.id.root) {
-                RootTools.isAccessGiven();
-            }*/
+            }
             return super.onOptionsItemSelected(item);
         }
 
@@ -174,43 +162,6 @@ public class SettingsActivity extends PreferenceActivity {
                     return true;
                 }
             });
-        }
-
-        void addToggles() {
-            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
-            PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
-            preferenceCategory.setTitle("Enable/disable apps");
-
-            preferenceScreen.addPreference(preferenceCategory);
-
-            List<PackageInfo> packageInfos = getActivity().getPackageManager().getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES);
-            for (PackageInfo packageInfo : packageInfos) {
-                final String packageName = packageInfo.packageName;
-                if (packageName.equals("com.pandora.android") ||
-                        packageName.equals("com.xiaomi.hm.health") ||
-                        packageName.equals("com.spotify.music") ||
-                        packageName.equals("com.alibaba.aliexpresshd")) {
-                    Preference preference = createToggle(packageName, packageInfo.applicationInfo.loadLabel(getActivity().getPackageManager()).toString());
-                    preferenceCategory.addPreference(preference);
-                    ((SwitchPreference)preference).setChecked(packageInfo.applicationInfo.enabled);
-                }
-            }
-        }
-
-        Preference createToggle(String pkg, String name) {
-            SwitchPreference switchPreference = new SwitchPreference(getContext());
-            switchPreference.setKey(pkg);
-            switchPreference.setTitle(name);
-
-            switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    ((SwitchPreference) preference).setChecked(Freezer.switchAppState(getContext(), preference.getKey()));
-                    return true;
-                }
-            });
-
-            return switchPreference;
         }
     }
 

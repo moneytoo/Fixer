@@ -17,8 +17,7 @@ Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the rel
 ## Setup
 
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS``
-2. Run following before adding any account. (Required only for app disabler)<br>``adb shell dpm set-device-owner com.brouken.fixer/.AdminReceiver``<br>(Possible issues on Samsung devices running Android 8 (?) - locking workspace, requiring factory reset!)
-3. Enable Accessibility
+2. Enable Accessibility
 
 WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
 
@@ -70,11 +69,6 @@ Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Andro
 
 ### DNS changer
 Private, partly based on AdHell
-
-### App disabler/enabler
-Description: Toggle state of few hard coded (my battery draining) apps. Uses [DevicePolicyManager.setApplicationHidden()](https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean))<br>
-Requirements: Device owner<br>
-Notes: Make it configurable. This is probably the same how Ice Box works.
 
 ### App backup
 Description: Automatic backup all installed/updated apps (apks) to SD card<br>
