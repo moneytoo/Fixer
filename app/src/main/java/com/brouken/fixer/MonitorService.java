@@ -4,12 +4,9 @@ import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Vibrator;
-import android.telephony.TelephonyManager;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -60,9 +57,6 @@ public class MonitorService extends AccessibilityService {
                     if (accessibilityEvent.getClassName().toString().equals("android.app.Dialog")) {
                         List<CharSequence> texts = accessibilityEvent.getText();
                         if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("bluetooth")) {
-                            //log("I'M IN!!!!!!!!!!!!!!!!");
-                            //dumpToChildren(getRootInActiveWindow());
-
                             List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("android:id/button1");
                             for (AccessibilityNodeInfo nodeInfo : nodeInfos)
                                 nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
@@ -73,10 +67,6 @@ public class MonitorService extends AccessibilityService {
                     if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.settings.wifi.WifiPickerDialog")) {
                         List<CharSequence> texts = accessibilityEvent.getText();
                         if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("wi-fi")) {
-                            //log("I'M IN!!!!!!!!!!!!!!!!");
-                            //dumpToChildren(getRootInActiveWindow());
-                            //dumpToChildren(accessibilityEvent.getSource());
-
                             List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("com.android.settings:id/wifi_picker_dialog_cancel");
                             for (AccessibilityNodeInfo nodeInfo : nodeInfos)
                                 nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
@@ -90,17 +80,16 @@ public class MonitorService extends AccessibilityService {
         if (mPrefs.isGMSNoLocationEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 if (accessibilityEvent.getClassName().toString().equals("com.google.android.location.settings.LocationSettingsCheckerActivity")) {
-                    List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("android:id/button2");
-                    for (AccessibilityNodeInfo nodeInfo : nodeInfos)
-                        nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                    clickButton("android:id/button2");
+                } else if (accessibilityEvent.getClassName().toString().equals("com.google.android.location.network.ConfirmAlertActivity")) {
+                    clickButton("android:id/button1");
                 }
             }
         }
 
         if (mPrefs.isKeyboardSwitchingEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
-                //log(accessibilityEventPackageName);
+                final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
 
                 List<String> visibleApps = new ArrayList<>();
 
@@ -125,6 +114,12 @@ public class MonitorService extends AccessibilityService {
                 }
             }
         }
+    }
+
+    void clickButton(final String viewId) {
+        final List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId(viewId);
+        for (AccessibilityNodeInfo nodeInfo : nodeInfos)
+            nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
     }
 
     @Override
@@ -266,5 +261,20 @@ public class MonitorService extends AccessibilityService {
         long[] pattern = {0, 10};
         if (vibrator != null)
             vibrator.vibrate(pattern, -1);
+    }
+
+    void dumpChildren(AccessibilityNodeInfo nodeInfo) {
+        log(nodeInfo.toString());
+
+        final int count = nodeInfo.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            final AccessibilityNodeInfo child = nodeInfo.getChild(i);
+
+            if (child == null)
+                continue;
+
+            dumpChildren(child);
+        }
     }
 }
