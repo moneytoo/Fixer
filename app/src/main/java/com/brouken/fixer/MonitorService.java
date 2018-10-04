@@ -52,26 +52,20 @@ public class MonitorService extends AccessibilityService {
 
         if (mPrefs.isSamsungNoPopupsEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
+                final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
                 if (accessibilityEventPackageName.equals("com.android.settings")) {
+                    // com.samsung.android.settings.bluetooth.BluetoothScanDialog
                     if (accessibilityEvent.getClassName().toString().equals("android.app.Dialog")) {
                         List<CharSequence> texts = accessibilityEvent.getText();
                         if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("bluetooth")) {
-                            List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("android:id/button1");
-                            for (AccessibilityNodeInfo nodeInfo : nodeInfos)
-                                nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
+                            clickButton("android:id/button1");
                         }
-
+                    } else if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.settings.wifi.WifiPickerDialog")) {
+                        clickButton("com.android.settings:id/wifi_picker_dialog_cancel");
                     }
-
-                    if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.settings.wifi.WifiPickerDialog")) {
-                        List<CharSequence> texts = accessibilityEvent.getText();
-                        if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("wi-fi")) {
-                            List<AccessibilityNodeInfo> nodeInfos = getRootInActiveWindow().findAccessibilityNodeInfosByViewId("com.android.settings:id/wifi_picker_dialog_cancel");
-                            for (AccessibilityNodeInfo nodeInfo : nodeInfos)
-                                nodeInfo.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.getId());
-                        }
-
+                } else if (accessibilityEventPackageName.equals("com.samsung.android.MtpApplication")) {
+                    if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.MtpApplication.USBConnection")) {
+                        clickButton("android:id/button1");
                     }
                 }
             }
@@ -91,7 +85,7 @@ public class MonitorService extends AccessibilityService {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
 
-                List<String> visibleApps = new ArrayList<>();
+                final List<String> visibleApps = new ArrayList<>();
 
                 List<AccessibilityWindowInfo> accessibilityWindowInfos = getWindows();
                 //log("windows=" + accessibilityWindowInfos.size());

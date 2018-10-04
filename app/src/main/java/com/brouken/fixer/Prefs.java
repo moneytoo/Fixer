@@ -1,12 +1,8 @@
 package com.brouken.fixer;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import static com.brouken.fixer.Utils.hasPermission;
-import static com.brouken.fixer.Utils.log;
 
 public class Prefs {
 

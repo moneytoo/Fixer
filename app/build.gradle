@@ -6,6 +6,7 @@ android {
         applicationId "com.brouken.fixer"
         minSdkVersion 23
         //targetSdkVersion 27
+        //noinspection ExpiringTargetSdkVersion
         targetSdkVersion 22
         versionCode 3
         versionName "0.3"

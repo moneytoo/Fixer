@@ -46,7 +46,7 @@
 
         <SwitchPreference
             android:key="pref_samsung_popups"
-            android:title="No BT/WiFi popups"
+            android:title="No BT/WiFi/MTP popups"
             android:summary="Accessibility" />
 
     </PreferenceCategory>
