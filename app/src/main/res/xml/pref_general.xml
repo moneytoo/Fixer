@@ -82,6 +82,7 @@
             android:title="Radio (Device info)" />
 
         <Preference
+            android:key="battery"
             android:title="Battery usage" >
             <intent
                 android:action="android.intent.action.POWER_USAGE_SUMMARY" />

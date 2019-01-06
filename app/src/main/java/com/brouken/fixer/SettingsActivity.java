@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -20,6 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.brouken.fixer.feature.AppBackup;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import static com.brouken.fixer.Utils.log;
 
@@ -151,6 +156,35 @@ public class SettingsActivity extends PreferenceActivity {
                 PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
                 preferenceScreen.removePreference(findPreference("pref_setup"));
             }
+
+            try {
+                final int multiplier = (Build.DEVICE.startsWith("herolte") ? 2 : 1);
+
+                final String health = "Battery health: " + getBatteryDetail("fg_asoc") + "%";
+                final String cycles = "Battery cycles: " + getBatteryDetail("battery_cycle");
+                final String capacity = "Battery capacity: " + (Integer.parseInt(getBatteryDetail("fg_fullcapnom")) * multiplier) + " mAh";
+
+                final Preference battery = findPreference("battery");
+
+                battery.setSummary(cycles + "\n" + health + "\n" + capacity);
+
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String getBatteryDetail(final String cmd) throws IOException, InterruptedException {
+            final Process proc = Runtime.getRuntime().exec("cat /sys/class/power_supply/battery/" + cmd);
+
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String output = "";
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output += line;
+            }
+            proc.waitFor();
+            return output;
         }
 
         @Override

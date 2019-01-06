@@ -48,7 +48,7 @@ public class MonitorService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
-        log(accessibilityEvent.toString());
+        //log(accessibilityEvent.toString());
 
         if (mPrefs.isSamsungNoPopupsEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
