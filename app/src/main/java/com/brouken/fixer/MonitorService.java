@@ -108,6 +108,15 @@ public class MonitorService extends AccessibilityService {
                 }
             }
         }
+
+        if (mPrefs.isAutoSelectClientCertificateEnabled()) {
+            final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
+            if (accessibilityEventPackageName.equals("com.android.keychain")) {
+                if (accessibilityEvent.getClassName().toString().equals("android.app.AlertDialog")) {
+                    clickButton("android:id/button1");
+                }
+            }
+        }
     }
 
     void clickButton(final String viewId) {

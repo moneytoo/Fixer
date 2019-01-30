@@ -15,6 +15,7 @@ public class Prefs {
     private boolean pref_samsung_led_dnd = false;
     private boolean pref_samsung_popups = false;
     private boolean pref_app_backup = false;
+    private boolean pref_auto_select_client_certificate = false;
 
     private String pref_sd_root = "";
 
@@ -31,6 +32,7 @@ public class Prefs {
         pref_samsung_led_dnd = mSharedPreferences.getBoolean("pref_samsung_led_dnd", pref_samsung_led_dnd);
         pref_samsung_popups = mSharedPreferences.getBoolean("pref_samsung_popups", pref_samsung_popups);
         pref_app_backup = mSharedPreferences.getBoolean("pref_app_backup", pref_app_backup);
+        pref_auto_select_client_certificate = mSharedPreferences.getBoolean("pref_auto_select_client_certificate", pref_auto_select_client_certificate);
 
         pref_sd_root = mSharedPreferences.getString("pref_sd_root", pref_sd_root);
     }
@@ -72,5 +74,9 @@ public class Prefs {
 
     public boolean isAppBackupEnabled() {
         return pref_app_backup;
+    }
+
+    public boolean isAutoSelectClientCertificateEnabled() {
+        return pref_auto_select_client_certificate;
     }
 }

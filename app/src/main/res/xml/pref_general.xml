@@ -34,6 +34,11 @@
             android:title="App backup"
             android:summary="SD card" />
 
+        <SwitchPreference
+            android:key="pref_auto_select_client_certificate"
+            android:title="Auto select client certificate"
+            android:summary="Accessibility" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

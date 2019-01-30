@@ -78,6 +78,11 @@ Notes: Creates ``apk`` folder on SD card (removable only - for now)
 ### Keep screen off on power events
 Private, uses [this](https://seap.samsung.com/api-references/android-customization/reference/android/app/enterprise/knoxcustom/SettingsManager.html#setScreenWakeupOnPowerState(boolean))
 
+### Auto select client certificate
+Description: <br>
+Requirements: Accessibility<br>
+Notes: Alternative to ``DeviceAdminReceiver.onChoosePrivateKeyAlias()``
+
 ## ToDo
 
 *    Samsung: Keys light - ``adb shell settings put system button_key_light 0``
