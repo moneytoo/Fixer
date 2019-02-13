@@ -160,13 +160,23 @@ public class SettingsActivity extends PreferenceActivity {
             try {
                 final int multiplier = (Build.DEVICE.startsWith("herolte") ? 2 : 1);
 
-                final String health = "Battery health: " + getBatteryDetail("fg_asoc") + "%";
-                final String cycles = "Battery cycles: " + getBatteryDetail("battery_cycle");
-                final String capacity = "Battery capacity: " + (Integer.parseInt(getBatteryDetail("fg_fullcapnom")) * multiplier) + " mAh";
+                String summary = "";
+
+                final String health = getBatteryDetail("fg_asoc");
+                if (!health.isEmpty())
+                    summary += "Battery health: " + getBatteryDetail("fg_asoc") + "%\n";
+
+                final String cycles = getBatteryDetail("battery_cycle");
+                if (!cycles.isEmpty())
+                    summary += "Battery cycles: " + cycles + "\n";
+
+                final String capacity = getBatteryDetail("fg_fullcapnom");
+                if (!capacity.isEmpty())
+                    summary += "Battery capacity: " + (Integer.parseInt(capacity) * multiplier) + " mAh";
 
                 final Preference battery = findPreference("battery");
 
-                battery.setSummary(cycles + "\n" + health + "\n" + capacity);
+                battery.setSummary(summary);
 
 
             } catch (IOException | InterruptedException e) {
