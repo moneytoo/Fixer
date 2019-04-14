@@ -39,6 +39,11 @@
             android:title="Auto select client certificate"
             android:summary="Accessibility" />
 
+        <SwitchPreference
+            android:key="pref_long_press_volume"
+            android:title="Long press volume for pause/next"
+            android:summary="SET_VOLUME_KEY_LONG_PRESS_LISTENER" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
