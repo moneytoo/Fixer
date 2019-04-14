@@ -374,7 +374,7 @@ public class MonitorService extends AccessibilityService implements MediaSession
 
     private final Runnable mVolumeLongPress = new Runnable() {
         public void run() {
-            // TODO: vibrate
+            vibrate();
 
             final boolean isMusicPlaying = audioManager.isMusicActive();
 
