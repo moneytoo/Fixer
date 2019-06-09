@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -31,14 +30,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.KeyEvent.FLAG_FROM_SYSTEM;
-import static android.view.KeyEvent.FLAG_LONG_PRESS;
 import static com.brouken.fixer.Utils.log;
 
 public class MonitorService extends AccessibilityService implements MediaSessionManager.OnVolumeKeyLongPressListener {
 
     Prefs mPrefs;
-    Interruption mInterruption;
 
     float gestureTapX;
     float gestureTapY;
@@ -84,9 +80,6 @@ public class MonitorService extends AccessibilityService implements MediaSession
 
         mPrefs = new Prefs(this);
 
-        if (mPrefs.isSamsungNoLedInDnDEnabled())
-            mInterruption = new Interruption(this);
-
         // TODO: Disable in full screen (?)
         startStopGestureArea();
 
@@ -98,37 +91,6 @@ public class MonitorService extends AccessibilityService implements MediaSession
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
         //log(accessibilityEvent.toString());
-
-        if (mPrefs.isSamsungNoPopupsEnabled()) {
-            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
-                if (accessibilityEventPackageName.equals("com.android.settings")) {
-                    // com.samsung.android.settings.bluetooth.BluetoothScanDialog
-                    if (accessibilityEvent.getClassName().toString().equals("android.app.Dialog")) {
-                        List<CharSequence> texts = accessibilityEvent.getText();
-                        if (texts.get(0) != null && texts.get(0).toString().toLowerCase().equals("bluetooth")) {
-                            clickButton("android:id/button1");
-                        }
-                    } else if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.settings.wifi.WifiPickerDialog")) {
-                        clickButton("com.android.settings:id/wifi_picker_dialog_cancel");
-                    }
-                } else if (accessibilityEventPackageName.equals("com.samsung.android.MtpApplication")) {
-                    if (accessibilityEvent.getClassName().toString().equals("com.samsung.android.MtpApplication.USBConnection")) {
-                        clickButton("android:id/button1");
-                    }
-                }
-            }
-        }
-
-        if (mPrefs.isGMSNoLocationEnabled()) {
-            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                if (accessibilityEvent.getClassName().toString().equals("com.google.android.location.settings.LocationSettingsCheckerActivity")) {
-                    clickButton("android:id/button2");
-                } else if (accessibilityEvent.getClassName().toString().equals("com.google.android.location.network.ConfirmAlertActivity")) {
-                    clickButton("android:id/button1");
-                }
-            }
-        }
 
         if (mPrefs.isKeyboardSwitchingEnabled()) {
             if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {

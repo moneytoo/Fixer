@@ -34,21 +34,6 @@ Description: Use Gboard as default IME, switch to Hacker's Keyboard in Termux<br
 Requirements: Accessibility and WRITE_SECURE_SETTINGS permission<br>
 Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-change-your-keyboard-on-a-per-app-basis/
 
-### No location dialog in GM
-Description: No more "To continue, let your device turn on location using Google's Location Service" in Google Maps<br>
-Requirements: Accessibility<br>
-Notes: Simulates tapping Cancel button. It uses resource id instead of text so it doesn't depend on interface language.
-
-### Samsung: No LED in DnD
-Description: Disable LED in Do not disturb mode<br>
-Requirements: None (APK is already set to ``targetSdkVersion 22`` to allow system automatically granting WRITE_SETTINGS)<br>
-Notes: Based on Tasker plugin: https://www.apkmonk.com/app/com.tinyroar.galaxys3ledcontroller/
-
-### Samsung: No BT/WiFi popups
-Description: <br>
-Requirements: Accessibility<br>
-Notes:
-
 ### Shortcut: SIP settings
 Description: Brings up system SIP/VoIP configuration screen that is often hidden but functional<br>
 Requirements: None<br>
@@ -68,16 +53,10 @@ Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Andro
 
 #### Since version 0.3
 
-### DNS changer
-Private, partly based on AdHell
-
 ### App backup
 Description: Automatic backup all installed/updated apps (apks) to SD card<br>
 Requirements: SD card<br>
 Notes: Creates ``apk`` folder on SD card (removable only - for now)
-
-### Keep screen off on power events
-Private, uses [this](https://seap.samsung.com/api-references/android-customization/reference/android/app/enterprise/knoxcustom/SettingsManager.html#setScreenWakeupOnPowerState(boolean))
 
 ### Auto select client certificate
 Description: <br>
@@ -91,7 +70,6 @@ Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEX
 
 ## ToDo
 
-*    Samsung: Keys light - ``adb shell settings put system button_key_light 0``
 *    Disable VoLTE icon - ``adb shell settings put secure icon_blacklist ims_volte,rotate,headset``
 *    Airplane mode switches only cellular network - ``adb shell settings put global airplane_mode_radios "cell"``
 *    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
@@ -99,7 +77,3 @@ Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEX
 #### When running Android P
 *    Keep screen off on power events (vendor universal) - base it on https://github.com/mudar/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
 *    Disable lock screen on wifi - base it on http://forum.joaoapps.com/index.php?resources/disable-and-enable-your-lock-screen-at-will-no-root.237/, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
-
-#### When upgrading from S7
-*    Fingerprint gestures - [FingerprintGestureController](https://developer.android.com/reference/android/accessibilityservice/FingerprintGestureController.html)
-*    Samsung: Remap Bixby button - something like https://play.google.com/store/apps/details?id=com.jamworks.bxactions

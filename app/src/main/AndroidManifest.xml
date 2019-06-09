@@ -11,10 +11,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_FIREWALL"/>
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SETTING"/>
-    <uses-permission android:name="com.samsung.android.knox.permission.KNOX_CUSTOM_SYSTEM"/>
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER" />
@@ -73,14 +69,6 @@
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".SammyReceiver"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.samsung.android.knox.intent.action.LICENSE_STATUS" />
             </intent-filter>
         </receiver>
 

@@ -89,29 +89,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            EditTextPreference sammyDNSPreference = (EditTextPreference) findPreference("pref_sammy_dns");
-            sammyDNSPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String dns = (String) newValue;
-                    Sammy.setDNS(getActivity(), dns);
-                    return true;
-                }
-            });
-
-            EditTextPreference sammyKeyPreference = (EditTextPreference) findPreference("pref_sammy_key");
-            sammyKeyPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Sammy.setKey(getActivity(), (String) newValue);
-                    return true;
-                }
-            });
-
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            if (sharedPreferences.contains("sammy_license"))
-                sammyKeyPreference.setSummary("License status: " + sharedPreferences.getString("sammy_license", "unknown"));
-
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
 
             SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");
@@ -127,17 +104,6 @@ public class SettingsActivity extends PreferenceActivity {
                         AppBackup.unschedule(getContext());
                     }
 
-                    return true;
-                }
-            });
-
-            SwitchPreference sammyWakeupOnPowerStatePreference = (SwitchPreference) findPreference("pref_sammy_power_wakeup");
-            sammyWakeupOnPowerStatePreference.setChecked(!Sammy.isWakeupOnPowerStateEnabled());
-            sammyWakeupOnPowerStatePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    boolean enable = (boolean) newValue;
-                    Sammy.setWakeupOnPowerState(!enable);
                     return true;
                 }
             });
