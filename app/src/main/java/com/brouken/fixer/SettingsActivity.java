@@ -57,15 +57,6 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            Preference sipPreference = findPreference("pref_sip");
-            sipPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Shortcuts.startSIP(getContext());
-                    return true;
-                }
-            });
-
             Preference radioPreference = findPreference("pref_radio");
             radioPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -121,32 +112,6 @@ public class SettingsActivity extends PreferenceActivity {
             if (removeAccessibility && removeAdmin) {
                 PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
                 preferenceScreen.removePreference(findPreference("pref_setup"));
-            }
-
-            try {
-                final int multiplier = (Build.DEVICE.startsWith("herolte") ? 2 : 1);
-
-                String summary = "";
-
-                final String health = getBatteryDetail("fg_asoc");
-                if (!health.isEmpty())
-                    summary += "Battery health: " + getBatteryDetail("fg_asoc") + "%\n";
-
-                final String cycles = getBatteryDetail("battery_cycle");
-                if (!cycles.isEmpty())
-                    summary += "Battery cycles: " + cycles + "\n";
-
-                final String capacity = getBatteryDetail("fg_fullcapnom");
-                if (!capacity.isEmpty())
-                    summary += "Battery capacity: " + (Integer.parseInt(capacity) * multiplier) + " mAh";
-
-                final Preference battery = findPreference("battery");
-
-                battery.setSummary(summary);
-
-
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
             }
         }
 

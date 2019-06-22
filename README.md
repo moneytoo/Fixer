@@ -34,11 +34,6 @@ Description: Use Gboard as default IME, switch to Hacker's Keyboard in Termux<br
 Requirements: Accessibility and WRITE_SECURE_SETTINGS permission<br>
 Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-change-your-keyboard-on-a-per-app-basis/
 
-### Shortcut: SIP settings
-Description: Brings up system SIP/VoIP configuration screen that is often hidden but functional<br>
-Requirements: None<br>
-Notes:
-
 ### Shortcut: Radio (Device info)
 Description: Set often unavailable network modes like "LTE only" or "LTE/WCDMA" (4G/3G without 2G)<br>
 Requirements: None<br>
