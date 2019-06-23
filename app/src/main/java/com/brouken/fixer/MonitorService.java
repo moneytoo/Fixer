@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.os.Vibrator;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -332,7 +331,7 @@ public class MonitorService extends AccessibilityService implements MediaSession
         }
 
         mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
-        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);
+        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);  // Graylisted in Android Pie
         mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
     }
 

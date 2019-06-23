@@ -44,14 +44,14 @@ Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 ### Side screen gestures
 Description: Pie control without actual pie. Swipe from center of a left or right side towards top/center/bottom for recents/home/back<br>
 Requirements: Accessibility<br>
-Notes/Todo: Consider actual pie UI, base iton PieController from [Paranoid Android](https://github.com/AOSPA/android_frameworks_base/tree/85bab89a8f92f85d210f0c29601cf3b1b2a5225a/packages/SystemUI/src/com/android/systemui/statusbar/pie)
+Notes:
 
 #### Since version 0.3
 
 ### App backup
-Description: Automatic backup all installed/updated apps (apks) to SD card<br>
-Requirements: SD card<br>
-Notes: Creates ``apk`` folder on SD card (removable only - for now)
+Description: Automatic backup all installed/updated apps (apks)<br>
+Requirements: None<br>
+Notes: Uses location ``Android/data/com.brouken.fixer/files/``
 
 ### Auto select client certificate
 Description: <br>
@@ -64,11 +64,4 @@ Requirements: SET_VOLUME_KEY_LONG_PRESS_LISTENER permission<br>
 Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEXT`` (when music is playing) or flashlight (when no music is playing). Based on: https://github.com/Cilenco/skipTrackLongPressVolume
 
 ## ToDo
-
-*    Disable VoLTE icon - ``adb shell settings put secure icon_blacklist ims_volte,rotate,headset``
-*    Airplane mode switches only cellular network - ``adb shell settings put global airplane_mode_radios "cell"``
-*    (?) Compact volume panel - something like [Noyze](https://forum.xda-developers.com/android/apps-games/app-noyze-volume-panel-replacement-t2875501)
-
-#### When running Android P
 *    Keep screen off on power events (vendor universal) - base it on https://github.com/mudar/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
-*    Disable lock screen on wifi - base it on http://forum.joaoapps.com/index.php?resources/disable-and-enable-your-lock-screen-at-will-no-root.237/, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
