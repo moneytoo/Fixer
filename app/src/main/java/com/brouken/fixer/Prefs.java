@@ -15,8 +15,6 @@ public class Prefs {
     private boolean pref_auto_select_client_certificate = false;
     private boolean pref_long_press_volume = false;
 
-    private String pref_sd_root = "";
-
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         loadSavedPreferences();
@@ -29,15 +27,6 @@ public class Prefs {
         pref_app_backup = mSharedPreferences.getBoolean("pref_app_backup", pref_app_backup);
         pref_auto_select_client_certificate = mSharedPreferences.getBoolean("pref_auto_select_client_certificate", pref_auto_select_client_certificate);
         pref_long_press_volume = mSharedPreferences.getBoolean("pref_long_press_volume", pref_long_press_volume);
-
-        pref_sd_root = mSharedPreferences.getString("pref_sd_root", pref_sd_root);
-    }
-
-    public void setSdRoot(String root) {
-        pref_sd_root = root;
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString("pref_sd_root", pref_sd_root);
-        editor.apply();
     }
 
     public boolean isNoSafeVolumeWarningEnabled() {
@@ -50,10 +39,6 @@ public class Prefs {
 
     public boolean isSideScreenGesturesEnabled() {
         return pref_side_screen_gestures;
-    }
-
-    public String getSdRoot() {
-        return pref_sd_root;
     }
 
     public boolean isAppBackupEnabled() {

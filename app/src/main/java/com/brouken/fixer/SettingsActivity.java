@@ -1,19 +1,13 @@
 package com.brouken.fixer;
 
-import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.view.Menu;
@@ -21,10 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.brouken.fixer.feature.AppBackup;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import static com.brouken.fixer.Utils.log;
 
@@ -90,7 +80,7 @@ public class SettingsActivity extends PreferenceActivity {
                     log("app backup: onPreferenceChange " + enable);
 
                     if (enable) {
-                        AppBackup.setup(getActivity());
+                        AppBackup.schedule(getContext());
                     } else {
                         AppBackup.unschedule(getContext());
                     }
@@ -113,19 +103,6 @@ public class SettingsActivity extends PreferenceActivity {
                 PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
                 preferenceScreen.removePreference(findPreference("pref_setup"));
             }
-        }
-
-        String getBatteryDetail(final String cmd) throws IOException, InterruptedException {
-            final Process proc = Runtime.getRuntime().exec("cat /sys/class/power_supply/battery/" + cmd);
-
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String output = "";
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output += line;
-            }
-            proc.waitFor();
-            return output;
         }
 
         @Override
@@ -155,19 +132,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AppBackup.REQUEST_SD_ACCESS && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            log(uri.toString());
-            getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            Prefs prefs = new Prefs(this);
-            prefs.setSdRoot(uri.toString());
-            AppBackup.schedule(this);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 

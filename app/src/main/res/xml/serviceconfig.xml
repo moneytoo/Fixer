@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service
     android:accessibilityEventTypes="typeWindowStateChanged"
-    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.google.android.gms, com.android.settings, com.samsung.android.MtpApplication, com.android.keychain"
+    android:packageNames="com.google.android.inputmethod.latin, org.pocketworkstation.pckeyboard, com.android.settings, com.android.keychain"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:canRetrieveWindowContent="true"
     android:accessibilityFlags="flagIncludeNotImportantViews|flagRetrieveInteractiveWindows|flagReportViewIds"

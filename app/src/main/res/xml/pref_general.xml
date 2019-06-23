@@ -26,8 +26,7 @@
 
         <SwitchPreference
             android:key="pref_app_backup"
-            android:title="App backup"
-            android:summary="SD card" />
+            android:title="App backup" />
 
         <SwitchPreference
             android:key="pref_auto_select_client_certificate"
