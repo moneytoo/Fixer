@@ -17,6 +17,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -271,10 +272,11 @@ public class MonitorService extends AccessibilityService implements MediaSession
     }
 
     private void vibrate() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {0, 10};
-        if (vibrator != null)
-            vibrator.vibrate(pattern, -1);
+//        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//        long[] pattern = {0, 10};
+//        if (vibrator != null)
+//            vibrator.vibrate(pattern, -1);
+        mLeftView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
     }
 
     void dumpChildren(AccessibilityNodeInfo nodeInfo) {
