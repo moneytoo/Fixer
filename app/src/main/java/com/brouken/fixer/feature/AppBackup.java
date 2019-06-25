@@ -89,7 +89,7 @@ public class AppBackup extends AsyncTask<String, Void, Boolean> {
     public static void schedule(Context context) {
         // DEBUG:
         // adb shell cmd jobscheduler run -f com.brouken.fixer 0
-        // adb dumpsys jobscheduler
+        // adb shell dumpsys jobscheduler
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.cancelAll();
         jobScheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, AppBackupJobService.class))
