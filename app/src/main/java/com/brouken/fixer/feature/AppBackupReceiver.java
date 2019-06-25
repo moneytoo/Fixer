@@ -10,7 +10,7 @@ import static com.brouken.fixer.Utils.log;
 
 public class AppBackupReceiver extends BroadcastReceiver {
 
-    // TODO: register receiver at runtime (when targeting O+)
+    // Receiver registered at runtime (required when targeting O+)
     @Override
     public void onReceive(Context context, Intent intent) {
         Prefs prefs = new Prefs(context);

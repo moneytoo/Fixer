@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -25,6 +26,8 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
+
+import com.brouken.fixer.feature.AppBackupReceiver;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -56,6 +59,8 @@ public class MonitorService extends AccessibilityService implements MediaSession
     private CameraManager mCameraManager;
     private String mCameraId;
 
+    private AppBackupReceiver mAppBackupReceiver;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -72,6 +77,9 @@ public class MonitorService extends AccessibilityService implements MediaSession
     public void onDestroy() {
         super.onDestroy();
         mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+
+        if (mAppBackupReceiver != null)
+            unregisterReceiver(mAppBackupReceiver);
     }
 
     @Override
@@ -85,6 +93,14 @@ public class MonitorService extends AccessibilityService implements MediaSession
 
         if (mPrefs.isLongPressVolumeEnabled())
             mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+
+        if (mPrefs.isAppBackupEnabled()) {
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+            intentFilter.addDataScheme("package");
+            mAppBackupReceiver = new AppBackupReceiver();
+            registerReceiver(mAppBackupReceiver, intentFilter);
+        }
     }
 
     @Override

@@ -76,16 +76,6 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <receiver android:name=".feature.AppBackupReceiver"
-            android:exported="true"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <!--<action android:name="android.intent.action.PACKAGE_REPLACED" />-->
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".SearchActivity"
             android:label="Web search"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
