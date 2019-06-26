@@ -63,5 +63,7 @@ Description: <br>
 Requirements: SET_VOLUME_KEY_LONG_PRESS_LISTENER permission<br>
 Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEXT`` (when music is playing) or flashlight (when no music is playing). Based on: https://github.com/Cilenco/skipTrackLongPressVolume
 
-## ToDo
-*    Keep screen off on power events (vendor universal) - base it on https://github.com/mudar/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)
+### Keep screen off on power events
+Description: <br>
+Requirements: Accessibility<br>
+Notes: Inspired by https://gitlab.com/mudar-ca/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)  

@@ -14,6 +14,7 @@ public class Prefs {
     private boolean pref_app_backup = false;
     private boolean pref_auto_select_client_certificate = false;
     private boolean pref_long_press_volume = false;
+    private boolean pref_power_wakeup = false;
 
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -27,6 +28,7 @@ public class Prefs {
         pref_app_backup = mSharedPreferences.getBoolean("pref_app_backup", pref_app_backup);
         pref_auto_select_client_certificate = mSharedPreferences.getBoolean("pref_auto_select_client_certificate", pref_auto_select_client_certificate);
         pref_long_press_volume = mSharedPreferences.getBoolean("pref_long_press_volume", pref_long_press_volume);
+        pref_power_wakeup = mSharedPreferences.getBoolean("pref_power_wakeup", pref_power_wakeup);
     }
 
     public boolean isNoSafeVolumeWarningEnabled() {
@@ -51,5 +53,9 @@ public class Prefs {
 
     public boolean isLongPressVolumeEnabled() {
         return pref_long_press_volume;
+    }
+
+    public boolean isPowerWakeupEnabled() {
+        return pref_power_wakeup;
     }
 }

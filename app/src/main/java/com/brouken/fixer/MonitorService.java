@@ -3,6 +3,7 @@ package com.brouken.fixer;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -60,6 +61,7 @@ public class MonitorService extends AccessibilityService implements MediaSession
     private String mCameraId;
 
     private AppBackupReceiver mAppBackupReceiver;
+    private PowerConnectionReceiver mPowerConnectionReceiver;
 
     @Override
     public void onCreate() {
@@ -80,6 +82,9 @@ public class MonitorService extends AccessibilityService implements MediaSession
 
         if (mAppBackupReceiver != null)
             unregisterReceiver(mAppBackupReceiver);
+
+        if (mPowerConnectionReceiver != null)
+            unregisterReceiver(mPowerConnectionReceiver);
     }
 
     @Override
@@ -100,6 +105,15 @@ public class MonitorService extends AccessibilityService implements MediaSession
             intentFilter.addDataScheme("package");
             mAppBackupReceiver = new AppBackupReceiver();
             registerReceiver(mAppBackupReceiver, intentFilter);
+        }
+
+        if (mPrefs.isPowerWakeupEnabled()) {
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+            intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+            mPowerConnectionReceiver = new PowerConnectionReceiver();
+            registerReceiver(mPowerConnectionReceiver, intentFilter);
         }
     }
 
@@ -422,4 +436,24 @@ public class MonitorService extends AccessibilityService implements MediaSession
             } catch (Throwable t) {}
         }
     };
+
+    private class PowerConnectionReceiver extends BroadcastReceiver {
+        long lastAction;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_POWER_CONNECTED:
+                case Intent.ACTION_POWER_DISCONNECTED:
+                    lastAction = System.currentTimeMillis();
+                    performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    break;
+                case Intent.ACTION_SCREEN_ON:
+                    if (System.currentTimeMillis() - lastAction < 3000)
+                        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    break;
+            }
+        }
+    }
+
 }
