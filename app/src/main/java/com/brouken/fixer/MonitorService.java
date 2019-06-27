@@ -28,6 +28,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
+import com.brouken.fixer.feature.AppBackup;
 import com.brouken.fixer.feature.AppBackupReceiver;
 
 import java.lang.reflect.Method;
@@ -105,6 +106,8 @@ public class MonitorService extends AccessibilityService implements MediaSession
             intentFilter.addDataScheme("package");
             mAppBackupReceiver = new AppBackupReceiver();
             registerReceiver(mAppBackupReceiver, intentFilter);
+
+            AppBackup.checkScheduled(this);
         }
 
         if (mPrefs.isPowerWakeupEnabled()) {

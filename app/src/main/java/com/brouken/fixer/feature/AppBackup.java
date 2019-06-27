@@ -90,7 +90,7 @@ public class AppBackup extends AsyncTask<String, Void, Boolean> {
         // DEBUG:
         // adb shell cmd jobscheduler run -f com.brouken.fixer 0
         // adb shell dumpsys jobscheduler
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.cancelAll();
         jobScheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, AppBackupJobService.class))
                 .setPersisted(true)
@@ -101,7 +101,13 @@ public class AppBackup extends AsyncTask<String, Void, Boolean> {
     }
 
     public static void unschedule(Context context) {
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.cancelAll();
+    }
+
+    public static void checkScheduled(Context context) {
+        final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        if (jobScheduler.getPendingJob(0) == null)
+            schedule(context);
     }
 }
