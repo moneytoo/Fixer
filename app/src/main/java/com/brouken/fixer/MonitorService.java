@@ -97,7 +97,10 @@ public class MonitorService extends AccessibilityService implements MediaSession
         // TODO: Disable in full screen (?)
         startStopGestureArea();
 
-        if (mPrefs.isLongPressVolumeEnabled())
+        final boolean isScreenOn = powerManager.isInteractive();
+        final boolean isLockScreenOn = keyguardManager.isKeyguardLocked();
+
+        if (mPrefs.isLongPressVolumeEnabled() && (isLockScreenOn || !isScreenOn))
             mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
 
         if (mPrefs.isAppBackupEnabled()) {
@@ -110,11 +113,13 @@ public class MonitorService extends AccessibilityService implements MediaSession
             AppBackup.checkScheduled(this);
         }
 
-        if (mPrefs.isPowerWakeupEnabled()) {
+        if (mPrefs.isPowerWakeupEnabled() || mPrefs.isLongPressVolumeEnabled()) {
             final IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
             intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
             intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            intentFilter.addAction(Intent.ACTION_USER_PRESENT);
             mPowerConnectionReceiver = new PowerConnectionReceiver();
             registerReceiver(mPowerConnectionReceiver, intentFilter);
         }
@@ -363,9 +368,9 @@ public class MonitorService extends AccessibilityService implements MediaSession
             return;
         }
 
-        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
-        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);  // Graylisted in Android Pie
-        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+//        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+//        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);  // Graylisted in Android Pie
+//        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
     }
 
     private final Runnable mVolumeLongPress = new Runnable() {
@@ -448,12 +453,29 @@ public class MonitorService extends AccessibilityService implements MediaSession
             switch (intent.getAction()) {
                 case Intent.ACTION_POWER_CONNECTED:
                 case Intent.ACTION_POWER_DISCONNECTED:
-                    lastAction = System.currentTimeMillis();
-                    performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    if (mPrefs.isPowerWakeupEnabled()) {
+                        lastAction = System.currentTimeMillis();
+                        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    }
                     break;
                 case Intent.ACTION_SCREEN_ON:
-                    if (System.currentTimeMillis() - lastAction < 3000)
-                        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    if (mPrefs.isPowerWakeupEnabled()) {
+                        log("screen on");
+                        if (System.currentTimeMillis() - lastAction < 3000)
+                            performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                    }
+                    break;
+                case Intent.ACTION_SCREEN_OFF:
+                    if (mPrefs.isLongPressVolumeEnabled()) {
+                        log("screen off");
+                        mediaSessionManager.setOnVolumeKeyLongPressListener(MonitorService.this, mHandler);
+                    }
+                    break;
+                case Intent.ACTION_USER_PRESENT:
+                    if (mPrefs.isLongPressVolumeEnabled()) {
+                        log("user present");
+                        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+                    }
                     break;
             }
         }

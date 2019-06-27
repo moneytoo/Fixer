@@ -6,7 +6,7 @@ android {
         applicationId "com.brouken.fixer"
         minSdkVersion 26
         //noinspection ExpiringTargetSdkVersion
-        targetSdkVersion 27  // getUiSoundsStreamType() graylisted in 28 (Pie)
+        targetSdkVersion 28  // getUiSoundsStreamType() graylisted in 28 (Pie)
         versionCode 3
         versionName "0.3"
     }
