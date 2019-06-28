@@ -12,7 +12,6 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
-import android.media.session.MediaSessionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -37,7 +36,7 @@ import java.util.List;
 
 import static com.brouken.fixer.Utils.log;
 
-public class MonitorService extends AccessibilityService implements MediaSessionManager.OnVolumeKeyLongPressListener {
+public class MonitorService extends AccessibilityService {
 
     Prefs mPrefs;
 
@@ -50,7 +49,7 @@ public class MonitorService extends AccessibilityService implements MediaSession
     boolean gestureDistanceReached = false;
 
 
-    private MediaSessionManager mediaSessionManager;
+//    private MediaSessionManager mediaSessionManager;
     private PowerManager powerManager;
     private AudioManager audioManager;
     private KeyguardManager keyguardManager;
@@ -64,6 +63,51 @@ public class MonitorService extends AccessibilityService implements MediaSession
     private AppBackupReceiver mAppBackupReceiver;
     private PowerConnectionReceiver mPowerConnectionReceiver;
 
+    private VolumeKeyLongPressListener volumeKeyLongPressListener;;
+    private final VolumeKeyLongPressListener.OnVolumeKeyLongPressListener onVolumeKeyLongPressListener = new VolumeKeyLongPressListener.OnVolumeKeyLongPressListener() {
+        @Override
+        public void onVolumeKeyLongPress(KeyEvent keyEvent) {
+            final boolean isScreenOn = powerManager.isInteractive();
+            final boolean isLockScreenOn = keyguardManager.isKeyguardLocked();
+
+            log(keyEvent.getKeyCode() + ", " + keyEvent.getFlags() + ", " + keyEvent.isLongPress() + ", " + keyEvent.getAction());
+
+            //if ((isMusicPlaying || mMediaNotPlayingEnable) && (!isScreenOn || mScreenOnEnable)) {
+            if (!isScreenOn || isLockScreenOn) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyEvent.isLongPress()) {
+                        inLongPress = true;
+                    } else if (!inLongPress) {
+                        inLongPress = keyEvent.isLongPress();
+                        mDownKey = keyEvent.getKeyCode();
+
+
+                        try {
+                            Method hasCallbacks = mHandler.getClass().getDeclaredMethod("hasCallbacks", new Class<?>[]{ Runnable.class });
+                            if (!((Boolean)(hasCallbacks.invoke(mHandler, mVolumeLongPress))))
+                                mHandler.postDelayed(mVolumeLongPress, ViewConfiguration.getLongPressTimeout());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+//                    if (!mHandler.hasCallbacks(mVolumeLongPress))
+//                        mHandler.postDelayed(mVolumeLongPress, ViewConfiguration.getLongPressTimeout());
+                    }
+                } else if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    mHandler.removeCallbacks(mVolumeLongPress);
+                    inLongPress = false;
+                }
+
+                return;
+            }
+
+//        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+//        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);  // Graylisted in Android Pie
+//        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -72,14 +116,17 @@ public class MonitorService extends AccessibilityService implements MediaSession
         powerManager = getSystemService(PowerManager.class);
         keyguardManager = getSystemService(KeyguardManager.class);
 
-        mediaSessionManager = getSystemService(MediaSessionManager.class);
+//        mediaSessionManager = getSystemService(MediaSessionManager.class);
         mHandler = new Handler();
+
+        volumeKeyLongPressListener = new VolumeKeyLongPressListener(this, onVolumeKeyLongPressListener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+//        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+        volumeKeyLongPressListener.unbind();
 
         if (mAppBackupReceiver != null)
             unregisterReceiver(mAppBackupReceiver);
@@ -101,7 +148,8 @@ public class MonitorService extends AccessibilityService implements MediaSession
         final boolean isLockScreenOn = keyguardManager.isKeyguardLocked();
 
         if (mPrefs.isLongPressVolumeEnabled() && (isLockScreenOn || !isScreenOn))
-            mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+//            mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+            volumeKeyLongPressListener.bind();
 
         if (mPrefs.isAppBackupEnabled()) {
             final IntentFilter intentFilter = new IntentFilter();
@@ -331,48 +379,6 @@ public class MonitorService extends AccessibilityService implements MediaSession
         }
     }
 
-    @Override
-    public void onVolumeKeyLongPress(KeyEvent keyEvent) {
-        final boolean isScreenOn = powerManager.isInteractive();
-        final boolean isLockScreenOn = keyguardManager.isKeyguardLocked();
-
-        log(keyEvent.getKeyCode() + ", " + keyEvent.getFlags() + ", " + keyEvent.isLongPress() + ", " + keyEvent.getAction());
-
-        //if ((isMusicPlaying || mMediaNotPlayingEnable) && (!isScreenOn || mScreenOnEnable)) {
-        if (!isScreenOn || isLockScreenOn) {
-            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                if (keyEvent.isLongPress()) {
-                    inLongPress = true;
-                } else if (!inLongPress) {
-                    inLongPress = keyEvent.isLongPress();
-                    mDownKey = keyEvent.getKeyCode();
-
-
-                    try {
-                        Method hasCallbacks = mHandler.getClass().getDeclaredMethod("hasCallbacks", new Class<?>[]{ Runnable.class });
-                        if (!((Boolean)(hasCallbacks.invoke(mHandler, mVolumeLongPress))))
-                            mHandler.postDelayed(mVolumeLongPress, ViewConfiguration.getLongPressTimeout());
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-//                    if (!mHandler.hasCallbacks(mVolumeLongPress))
-//                        mHandler.postDelayed(mVolumeLongPress, ViewConfiguration.getLongPressTimeout());
-                }
-            } else if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                mHandler.removeCallbacks(mVolumeLongPress);
-                inLongPress = false;
-            }
-
-            return;
-        }
-
-//        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
-//        mediaSessionManager.dispatchVolumeKeyEvent(keyEvent, audioManager.getUiSoundsStreamType(), false);  // Graylisted in Android Pie
-//        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
-    }
-
     private final Runnable mVolumeLongPress = new Runnable() {
         public void run() {
             vibrate();
@@ -468,13 +474,15 @@ public class MonitorService extends AccessibilityService implements MediaSession
                 case Intent.ACTION_SCREEN_OFF:
                     if (mPrefs.isLongPressVolumeEnabled()) {
                         log("screen off");
-                        mediaSessionManager.setOnVolumeKeyLongPressListener(MonitorService.this, mHandler);
+//                        mediaSessionManager.setOnVolumeKeyLongPressListener(MonitorService.this, mHandler);
+                        volumeKeyLongPressListener.bind();
                     }
                     break;
                 case Intent.ACTION_USER_PRESENT:
                     if (mPrefs.isLongPressVolumeEnabled()) {
                         log("user present");
-                        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+//                        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
+                        volumeKeyLongPressListener.unbind();
                     }
                     break;
             }

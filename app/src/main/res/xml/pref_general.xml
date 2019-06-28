@@ -2,17 +2,12 @@
     android:key="screen">
 
     <PreferenceCategory
-        android:title="Volume">
+        android:title="Tweaks">
 
         <SwitchPreference
             android:key="pref_no_safe_volume_warning"
             android:title="No safe volume warning"
             android:summary="WRITE_SECURE_SETTINGS" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="Misc">
 
         <SwitchPreference
             android:key="pref_keyboard_switching"
