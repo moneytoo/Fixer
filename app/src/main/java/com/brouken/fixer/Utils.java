@@ -37,6 +37,18 @@ public class Utils {
         }
     }
 
+    public static void setEnableCallRecording(Context context) {
+        // adb shell settings put global op_voice_recording_supported_by_mcc 1
+        if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
+            try {
+                Settings.Global.putInt(context.getContentResolver(), "op_voice_recording_supported_by_mcc", 1);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void changeIME(Context context, boolean temporaryIME) {
         // https://stackoverflow.com/questions/11036435/switch-keyboard-profile-programmatically
         // ime list -s

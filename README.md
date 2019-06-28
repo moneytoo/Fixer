@@ -18,7 +18,9 @@ Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the rel
 
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS`` <br> ``adb shell pm grant com.brouken.fixer android.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER``
 
-2. Enable Accessibility
+2. Enable "Display over other apps" permission in "App info"
+
+3. Enable Accessibility
 
 WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
 
@@ -67,3 +69,8 @@ Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEX
 Description: <br>
 Requirements: Accessibility<br>
 Notes: Inspired by https://gitlab.com/mudar-ca/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)  
+
+### OnePlus: Call recording
+Description: <br>
+Requirements: WRITE_SECURE_SETTINGS permission<br>
+Notes: Uses ``op_voice_recording_supported_by_mcc`` 

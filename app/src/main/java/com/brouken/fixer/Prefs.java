@@ -15,6 +15,7 @@ public class Prefs {
     private boolean pref_auto_select_client_certificate = false;
     private boolean pref_long_press_volume = false;
     private boolean pref_power_wakeup = false;
+    private boolean pref_oneplus_call_recording = false;
 
     public Prefs(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -29,6 +30,7 @@ public class Prefs {
         pref_auto_select_client_certificate = mSharedPreferences.getBoolean("pref_auto_select_client_certificate", pref_auto_select_client_certificate);
         pref_long_press_volume = mSharedPreferences.getBoolean("pref_long_press_volume", pref_long_press_volume);
         pref_power_wakeup = mSharedPreferences.getBoolean("pref_power_wakeup", pref_power_wakeup);
+        pref_oneplus_call_recording = mSharedPreferences.getBoolean("pref_oneplus_call_recording", pref_oneplus_call_recording);
     }
 
     public boolean isNoSafeVolumeWarningEnabled() {
@@ -57,5 +59,9 @@ public class Prefs {
 
     public boolean isPowerWakeupEnabled() {
         return pref_power_wakeup;
+    }
+
+    public boolean isOnePlusCallRecordingEnabled() {
+        return pref_oneplus_call_recording;
     }
 }

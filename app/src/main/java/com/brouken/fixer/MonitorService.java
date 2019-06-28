@@ -467,7 +467,7 @@ public class MonitorService extends AccessibilityService {
                 case Intent.ACTION_SCREEN_ON:
                     if (mPrefs.isPowerWakeupEnabled()) {
                         log("screen on");
-                        if (System.currentTimeMillis() - lastAction < 3000)
+                        if (System.currentTimeMillis() - lastAction < 2000)
                             performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
                     }
                     break;

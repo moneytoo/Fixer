@@ -2,7 +2,7 @@
     android:key="screen">
 
     <PreferenceCategory
-        android:title="Tweaks">
+        android:title="Universal">
 
         <SwitchPreference
             android:key="pref_no_safe_volume_warning"
@@ -37,6 +37,16 @@
             android:key="pref_power_wakeup"
             android:title="No wake on power"
             android:summary="Accessibility" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OnePlus">
+
+        <SwitchPreference
+            android:key="pref_oneplus_call_recording"
+            android:title="Call recording"
+            android:summary="WRITE_SECURE_SETTINGS" />
 
     </PreferenceCategory>
 
