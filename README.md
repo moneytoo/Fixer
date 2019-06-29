@@ -61,9 +61,9 @@ Requirements: Accessibility<br>
 Notes: Alternative to ``DeviceAdminReceiver.onChoosePrivateKeyAlias()``
 
 ### Long press volume controls
-Description: <br>
+Description: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEXT`` (when music is playing) or flashlight (when no music is playing)<br>
 Requirements: SET_VOLUME_KEY_LONG_PRESS_LISTENER permission<br>
-Notes: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEXT`` (when music is playing) or flashlight (when no music is playing). Based on: https://github.com/Cilenco/skipTrackLongPressVolume
+Notes: Based on: https://github.com/Cilenco/skipTrackLongPressVolume
 
 ### Keep screen off on power events
 Description: <br>
@@ -74,3 +74,8 @@ Notes: Inspired by https://gitlab.com/mudar-ca/SnooZy, requires Android P: [GLOB
 Description: <br>
 Requirements: WRITE_SECURE_SETTINGS permission<br>
 Notes: Uses ``op_voice_recording_supported_by_mcc`` 
+
+### OnePlus: Alert slider actions
+Description: Switch slider to Silent mode to enable flashlight<br>
+Requirements: <br>
+Notes: Observes global settings ``three_Key_mode`` key. Flashlight is an extra functionality, phone is in actual Silent mode. 

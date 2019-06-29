@@ -48,6 +48,10 @@
             android:title="Call recording"
             android:summary="WRITE_SECURE_SETTINGS" />
 
+        <SwitchPreference
+            android:key="pref_oneplus_alert_slider_actions"
+            android:title="Alert slider actions" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

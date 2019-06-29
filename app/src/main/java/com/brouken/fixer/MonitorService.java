@@ -4,9 +4,11 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -54,6 +57,8 @@ public class MonitorService extends AccessibilityService {
     private AudioManager audioManager;
     private KeyguardManager keyguardManager;
     private Handler mHandler;
+    private ContentResolver contentResolver;
+    private PowerManager.WakeLock wakeLock;
 
     private int mDownKey;
     private boolean inLongPress = false;
@@ -62,6 +67,8 @@ public class MonitorService extends AccessibilityService {
 
     private AppBackupReceiver mAppBackupReceiver;
     private PowerConnectionReceiver mPowerConnectionReceiver;
+
+    private ContentObserver onePlusAlertSliderObserver;
 
     private VolumeKeyLongPressListener volumeKeyLongPressListener;;
     private final VolumeKeyLongPressListener.OnVolumeKeyLongPressListener onVolumeKeyLongPressListener = new VolumeKeyLongPressListener.OnVolumeKeyLongPressListener() {
@@ -116,6 +123,9 @@ public class MonitorService extends AccessibilityService {
         powerManager = getSystemService(PowerManager.class);
         keyguardManager = getSystemService(KeyguardManager.class);
 
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Fixer::ButtonWakeLock");
+        contentResolver = getContentResolver();
+
 //        mediaSessionManager = getSystemService(MediaSessionManager.class);
         mHandler = new Handler();
 
@@ -133,6 +143,9 @@ public class MonitorService extends AccessibilityService {
 
         if (mPowerConnectionReceiver != null)
             unregisterReceiver(mPowerConnectionReceiver);
+
+        if (onePlusAlertSliderObserver != null)
+            contentResolver.unregisterContentObserver(onePlusAlertSliderObserver);
     }
 
     @Override
@@ -170,6 +183,31 @@ public class MonitorService extends AccessibilityService {
             intentFilter.addAction(Intent.ACTION_USER_PRESENT);
             mPowerConnectionReceiver = new PowerConnectionReceiver();
             registerReceiver(mPowerConnectionReceiver, intentFilter);
+        }
+
+        if (mPrefs.isOnePlusAlertSliderActionsEnabled()) {
+            onePlusAlertSliderObserver = new ContentObserver(new Handler()) {
+                @Override
+                public void onChange(boolean selfChange) {
+
+                    wakeLock.acquire(3000);
+
+                    super.onChange(selfChange);
+
+                    final int value = Settings.Global.getInt(contentResolver, "three_Key_mode", 0);
+
+                    log("onChange: " + value);
+
+                    switch (value) {
+                        case 1:
+                            switchFlashlight(getApplicationContext(), true);
+                            break;
+                        default:
+                            switchFlashlight(getApplicationContext(), false);
+                    }
+                }
+            };
+            contentResolver.registerContentObserver(Settings.Global.getUriFor("three_Key_mode"), false, onePlusAlertSliderObserver);
         }
     }
 
@@ -406,7 +444,7 @@ public class MonitorService extends AccessibilityService {
         audioManager.dispatchMediaKeyEvent(upEvent);
     }
 
-    private void toggleFlashlight(Context context) {
+    private void initCamera(Context context) {
         if (mCameraManager == null) {
             mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
             String cameraId = null;
@@ -418,11 +456,22 @@ public class MonitorService extends AccessibilityService {
                 mCameraId = cameraId;
             }
         }
+    }
+
+    private void toggleFlashlight(Context context) {
+        initCamera(context);
         try {
             mCameraManager.registerTorchCallback(mTorchCallback, null);
         } catch (Throwable e) {
             return;
         }
+    }
+
+    private void switchFlashlight(Context context, boolean enable) {
+        initCamera(context);
+        try {
+            mCameraManager.setTorchMode(mCameraId, enable);
+        } catch (Throwable t) {}
     }
 
     static String getCameraId(CameraManager cameraManager) throws CameraAccessException {
