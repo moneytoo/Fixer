@@ -516,8 +516,10 @@ public class MonitorService extends AccessibilityService {
                 case Intent.ACTION_SCREEN_ON:
                     if (mPrefs.isPowerWakeupEnabled()) {
                         log("screen on");
-                        if (System.currentTimeMillis() - lastAction < 2000)
+                        if (System.currentTimeMillis() - lastAction < 3000) {
+                            lastAction = 0;  // Prevent 2nd screen on (triggered by user) within time range
                             performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+                        }
                     }
                     break;
                 case Intent.ACTION_SCREEN_OFF:
