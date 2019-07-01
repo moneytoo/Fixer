@@ -69,6 +69,7 @@ public class MonitorService extends AccessibilityService {
     private PowerConnectionReceiver mPowerConnectionReceiver;
 
     private ContentObserver onePlusAlertSliderObserver;
+    private ContentObserver onePlusCallRecordingObserver;
 
     private VolumeKeyLongPressListener volumeKeyLongPressListener;;
     private final VolumeKeyLongPressListener.OnVolumeKeyLongPressListener onVolumeKeyLongPressListener = new VolumeKeyLongPressListener.OnVolumeKeyLongPressListener() {
@@ -146,6 +147,9 @@ public class MonitorService extends AccessibilityService {
 
         if (onePlusAlertSliderObserver != null)
             contentResolver.unregisterContentObserver(onePlusAlertSliderObserver);
+
+        if (onePlusCallRecordingObserver != null)
+            contentResolver.unregisterContentObserver(onePlusCallRecordingObserver);
     }
 
     @Override
@@ -196,7 +200,7 @@ public class MonitorService extends AccessibilityService {
 
                     final int value = Settings.Global.getInt(contentResolver, "three_Key_mode", 0);
 
-                    log("onChange: " + value);
+                    log("three_Key_mode onChange: " + value);
 
                     switch (value) {
                         case 1:
@@ -208,6 +212,24 @@ public class MonitorService extends AccessibilityService {
                 }
             };
             contentResolver.registerContentObserver(Settings.Global.getUriFor("three_Key_mode"), false, onePlusAlertSliderObserver);
+        }
+
+        if (mPrefs.isOnePlusCallRecordingEnabled()) {
+            onePlusCallRecordingObserver = new ContentObserver(new Handler()) {
+                @Override
+                public void onChange(boolean selfChange) {
+
+                    super.onChange(selfChange);
+
+                    final int value = Settings.Global.getInt(contentResolver, "op_voice_recording_supported_by_mcc", 0);
+
+                    log("op_voice_recording_supported_by_mcc onChange: " + value);
+
+                    if (value != 1)
+                        Utils.setEnableCallRecording(getApplicationContext());
+                }
+            };
+            contentResolver.registerContentObserver(Settings.Global.getUriFor("op_voice_recording_supported_by_mcc"), false, onePlusCallRecordingObserver);
         }
     }
 
