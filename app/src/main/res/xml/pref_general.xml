@@ -46,7 +46,7 @@
         <SwitchPreference
             android:key="pref_oneplus_call_recording"
             android:title="Call recording"
-            android:summary="WRITE_SECURE_SETTINGS" />
+            android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
 
         <SwitchPreference
             android:key="pref_oneplus_alert_slider_actions"
