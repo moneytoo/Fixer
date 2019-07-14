@@ -8,8 +8,16 @@ import android.widget.Toast;
 public class Shortcuts {
 
     public static void startRadio(Context context) {
+        startSettingsActivity(context, "com.android.settings.RadioInfo");
+    }
+
+    public static void startBatteryOptimization(Context context) {
+        startSettingsActivity(context, "com.android.settings.Settings$HighPowerApplicationsActivity");
+    }
+
+    private static void startSettingsActivity(Context context, final String activityName) {
         Intent intent = new Intent("android.intent.action.MAIN");
-        intent.setComponent(new ComponentName("com.android.settings","com.android.settings.RadioInfo"));
+        intent.setComponent(new ComponentName("com.android.settings",activityName));
         try {
             context.startActivity(intent);
         } catch (Exception x) {

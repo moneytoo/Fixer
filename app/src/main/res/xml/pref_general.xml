@@ -61,6 +61,10 @@
             android:key="pref_radio"
             android:title="Radio (Device info)" />
 
+        <Preference
+            android:key="pref_battery_optimization"
+            android:title="Battery optimization" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
