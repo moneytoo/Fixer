@@ -65,6 +65,15 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
+            Preference toggleImmersiveNavigationPreference = findPreference("pref_immersive_navigation");
+            toggleImmersiveNavigationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Utils.toggleImmersiveNavigation(getContext());
+                    return true;
+                }
+            });
+
             Preference deviceAdminPreference = findPreference("pref_device_admin");
             deviceAdminPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
