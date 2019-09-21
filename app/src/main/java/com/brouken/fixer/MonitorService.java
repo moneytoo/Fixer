@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -306,8 +307,8 @@ public class MonitorService extends AccessibilityService {
         mRightView = new View(this);
 
         // Colored for debug
-        //leftView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
-        //rightView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
+        //mLeftView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
+        //mRightView.setBackgroundColor(Color.argb(0x40, 0xff, 0x00, 0x00));
 
         WindowManager.LayoutParams params= new WindowManager.LayoutParams(
                 getOverlayWidth(),
