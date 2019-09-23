@@ -11,10 +11,6 @@ public class Shortcuts {
         startSettingsActivity(context, "com.android.settings.RadioInfo");
     }
 
-    public static void startBatteryOptimization(Context context) {
-        startSettingsActivity(context, "com.android.settings.Settings$HighPowerApplicationsActivity");
-    }
-
     private static void startSettingsActivity(Context context, final String activityName) {
         Intent intent = new Intent("android.intent.action.MAIN");
         intent.setComponent(new ComponentName("com.android.settings",activityName));

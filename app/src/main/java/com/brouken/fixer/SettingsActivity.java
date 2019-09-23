@@ -56,15 +56,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            Preference batteryOptimizationPreference = findPreference("pref_battery_optimization");
-            batteryOptimizationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Shortcuts.startBatteryOptimization(getContext());
-                    return true;
-                }
-            });
-
             Preference toggleImmersiveNavigationPreference = findPreference("pref_immersive_navigation");
             toggleImmersiveNavigationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
