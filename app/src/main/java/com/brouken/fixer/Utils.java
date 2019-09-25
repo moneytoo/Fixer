@@ -124,10 +124,4 @@ public class Utils {
 
         return false;
     }
-
-    public static boolean isDeviceAdminEnabled(Context context) {
-        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) context.getApplicationContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
-        ComponentName deviceAdmin = new ComponentName(context.getApplicationContext(), AdminReceiver.class);
-        return devicePolicyManager.isAdminActive(deviceAdmin);
-    }
 }

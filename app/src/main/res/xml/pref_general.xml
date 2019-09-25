@@ -78,11 +78,6 @@
             <intent android:action="android.settings.ACCESSIBILITY_SETTINGS" />
         </Preference>
 
-        <Preference
-            android:key="pref_device_admin"
-            android:title="Device admin">
-        </Preference>
-
     </PreferenceCategory>
 
 </PreferenceScreen>

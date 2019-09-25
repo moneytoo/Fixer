@@ -65,20 +65,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            Preference deviceAdminPreference = findPreference("pref_device_admin");
-            deviceAdminPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    ComponentName mDeviceAdmin;
-                    mDeviceAdmin = new ComponentName(getActivity().getApplicationContext(), AdminReceiver.class);
-
-                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
 
             SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");
@@ -98,18 +84,11 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            final boolean removeAccessibility = Utils.isAccessibilitySettingsEnabled(this.getContext());
-            final boolean removeAdmin = Utils.isDeviceAdminEnabled(this.getContext());
-
-            PreferenceCategory categorySetup = (PreferenceCategory) findPreference("pref_setup");
-
-            if (removeAccessibility)
+            if (Utils.isAccessibilitySettingsEnabled(this.getContext())) {
+                final PreferenceCategory categorySetup = (PreferenceCategory) findPreference("pref_setup");
                 categorySetup.removePreference(findPreference("pref_accessibility"));
-            if (removeAdmin)
-                categorySetup.removePreference(findPreference("pref_device_admin"));
 
-            if (removeAccessibility && removeAdmin) {
-                PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
+                final PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
                 preferenceScreen.removePreference(findPreference("pref_setup"));
             }
         }
