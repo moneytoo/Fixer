@@ -18,9 +18,7 @@ Get [latest apk](https://github.com/moneytoo/Fixer/releases/latest) from the rel
 
 1. Run following command on your computer with Android device connected. This one time setup requires enabled Developer mode & USB debugging. <br> ``adb shell pm grant com.brouken.fixer android.permission.WRITE_SECURE_SETTINGS`` <br> ``adb shell pm grant com.brouken.fixer android.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER``
 
-2. Enable "Display over other apps" permission in "App info"
-
-3. Enable Accessibility
+2. Enable Accessibility
 
 WARNING: There are no checks for required permissions or runtime applying of changes so some features may require restart of a service or a device.
 
@@ -40,13 +38,6 @@ Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically
 Description: Set often unavailable network modes like "LTE only" or "LTE/WCDMA" (4G/3G without 2G)<br>
 Requirements: None<br>
 Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
-
-#### Since version 0.2
-
-### Side screen gestures
-Description: Pie control without actual pie. Swipe from center of a left or right side towards top/center/bottom for recents/home/back<br>
-Requirements: Accessibility<br>
-Notes:
 
 #### Since version 0.3
 

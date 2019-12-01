@@ -56,8 +56,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
-
             SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");
             appBackupPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

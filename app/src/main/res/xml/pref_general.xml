@@ -15,11 +15,6 @@
             android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
 
         <SwitchPreference
-            android:key="pref_side_screen_gestures"
-            android:title="Side screen gestures"
-            android:summary="Accessibility" />
-
-        <SwitchPreference
             android:key="pref_app_backup"
             android:title="App backup" />
 
