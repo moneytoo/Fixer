@@ -49,23 +49,6 @@ public class Utils {
         }
     }
 
-    public static void toggleImmersiveNavigation(Context context) {
-        if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
-            try {
-                final String value = Settings.Global.getString(context.getContentResolver(), "policy_control");
-                String newValue = null;
-
-                if (value == null || !value.contains("immersive.navigation="))
-                    newValue = "immersive.navigation=*";
-
-                Settings.Global.putString(context.getContentResolver(), "policy_control", newValue);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static void changeIME(Context context, boolean temporaryIME) {
         // https://stackoverflow.com/questions/11036435/switch-keyboard-profile-programmatically
         // ime list -s

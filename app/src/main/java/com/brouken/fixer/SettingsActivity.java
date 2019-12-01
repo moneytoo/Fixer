@@ -56,15 +56,6 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
-            Preference toggleImmersiveNavigationPreference = findPreference("pref_immersive_navigation");
-            toggleImmersiveNavigationPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Utils.toggleImmersiveNavigation(getContext());
-                    return true;
-                }
-            });
-
             registerSwitchChangeToServiceUpdate("pref_side_screen_gestures");
 
             SwitchPreference appBackupPreference = (SwitchPreference) findPreference("pref_app_backup");

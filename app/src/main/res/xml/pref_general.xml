@@ -38,11 +38,6 @@
             android:title="No wake on power"
             android:summary="Accessibility" />
 
-        <Preference
-            android:key="pref_immersive_navigation"
-            android:title="Toggle immersive navigation"
-            android:summary="WRITE_SECURE_SETTINGS" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
