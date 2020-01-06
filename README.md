@@ -51,11 +51,6 @@ Description: Long press volume down for ``PLAY/PAUSE``; long press volume up for
 Requirements: SET_VOLUME_KEY_LONG_PRESS_LISTENER permission<br>
 Notes: Based on: https://github.com/Cilenco/skipTrackLongPressVolume
 
-### Keep screen off on power events
-Description: <br>
-Requirements: Accessibility<br>
-Notes: Inspired by https://gitlab.com/mudar-ca/SnooZy, requires Android P: [GLOBAL_ACTION_LOCK_SCREEN](https://developer.android.com/reference/android/accessibilityservice/AccessibilityService.html#GLOBAL_ACTION_LOCK_SCREEN)  
-
 ### OnePlus: Call recording
 Description: <br>
 Requirements: WRITE_SECURE_SETTINGS permission<br>

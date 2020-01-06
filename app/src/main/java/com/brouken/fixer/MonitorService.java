@@ -9,25 +9,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
@@ -168,11 +160,8 @@ public class MonitorService extends AccessibilityService {
             AppBackup.checkScheduled(this);
         }
 
-        if (mPrefs.isPowerWakeupEnabled() || mPrefs.isLongPressVolumeEnabled()) {
+        if (mPrefs.isLongPressVolumeEnabled()) {
             final IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-            intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-            intentFilter.addAction(Intent.ACTION_SCREEN_ON);
             intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
             intentFilter.addAction(Intent.ACTION_USER_PRESENT);
             mPowerConnectionReceiver = new PowerConnectionReceiver();
@@ -205,6 +194,7 @@ public class MonitorService extends AccessibilityService {
         }
 
         if (mPrefs.isOnePlusCallRecordingEnabled()) {
+            Utils.setEnableCallRecording(getApplicationContext());
             onePlusCallRecordingObserver = new ContentObserver(new Handler()) {
                 @Override
                 public void onChange(boolean selfChange) {
@@ -377,27 +367,9 @@ public class MonitorService extends AccessibilityService {
     };
 
     private class PowerConnectionReceiver extends BroadcastReceiver {
-        long lastAction;
-
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case Intent.ACTION_POWER_CONNECTED:
-                case Intent.ACTION_POWER_DISCONNECTED:
-                    if (mPrefs.isPowerWakeupEnabled()) {
-                        lastAction = System.currentTimeMillis();
-                        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
-                    }
-                    break;
-                case Intent.ACTION_SCREEN_ON:
-                    if (mPrefs.isPowerWakeupEnabled()) {
-                        log("screen on");
-                        if (System.currentTimeMillis() - lastAction < 3000) {
-                            lastAction = 0;  // Prevent 2nd screen on (triggered by user) within time range
-                            performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
-                        }
-                    }
-                    break;
                 case Intent.ACTION_SCREEN_OFF:
                     if (mPrefs.isLongPressVolumeEnabled()) {
                         log("screen off");
