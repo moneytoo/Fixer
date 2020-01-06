@@ -18,8 +18,6 @@ public class IntentReceiver extends BroadcastReceiver {
 
         if (action == null) {
             Prefs prefs = new Prefs(context);
-            if (prefs.isNoSafeVolumeWarningEnabled())
-                Utils.setNoSafeVolume(context);
             if (prefs.isOnePlusCallRecordingEnabled())
                 Utils.setEnableCallRecording(context);
         } else if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {

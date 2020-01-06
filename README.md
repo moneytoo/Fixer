@@ -24,11 +24,6 @@ WARNING: There are no checks for required permissions or runtime applying of cha
 
 ## Features
 
-### No safe volume warning
-Description: <br>
-Requirements: WRITE_SECURE_SETTINGS permission<br>
-Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-disable-the-high-volume-warning-without-root/
-
 ### Hacker's Keyboard only in Termux
 Description: Use Gboard as default IME, switch to Hacker's Keyboard in Termux<br>
 Requirements: Accessibility and WRITE_SECURE_SETTINGS permission<br>

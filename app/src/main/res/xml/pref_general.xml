@@ -5,11 +5,6 @@
         android:title="Universal">
 
         <SwitchPreference
-            android:key="pref_no_safe_volume_warning"
-            android:title="No safe volume warning"
-            android:summary="WRITE_SECURE_SETTINGS" />
-
-        <SwitchPreference
             android:key="pref_keyboard_switching"
             android:title="Hacker's Keyboard only in Termux"
             android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
