@@ -54,7 +54,7 @@ Notes: Based on: https://github.com/Cilenco/skipTrackLongPressVolume
 ### OnePlus: Call recording
 Description: <br>
 Requirements: WRITE_SECURE_SETTINGS permission<br>
-Notes: Uses ``op_voice_recording_supported_by_mcc`` 
+Notes: Uses ``op_voice_recording_supported_by_mcc``. Works only with stock Phone app (mobile calls only, it doesn't work for SIP).
 
 ### OnePlus: Alert slider actions
 Description: Switch slider to Silent mode to enable flashlight<br>
