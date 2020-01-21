@@ -10,4 +10,9 @@
     <item component="ComponentInfo{com.netflix.mediaclient/com.netflix.mediaclient.ui.launch.UIWebViewActivity}" drawable="netflix" />
     <item component="ComponentInfo{com.brouken.fixer/com.brouken.fixer.SettingsActivity}" drawable="fixer" />
     <item component="ComponentInfo{pl.solidexplorer2/pl.solidexplorer.SolidExplorer}" drawable="solid_explorer" />
+
+    <!-- Adaptive icons -->
+    <item component="ComponentInfo{cz.mbank/pl.mbank.core.activity.StartActivity}" drawable="mbank" />
+    <item component="ComponentInfo{cz.creditas.mb/cz.creditas.mb.UnsecuredMainActivity}" drawable="creditas" />
+    <item component="ComponentInfo{com.bodunov.GalileoPro/com.bodunov.galileo.SplashActivity}" drawable="guru_maps" />
 </resources>
