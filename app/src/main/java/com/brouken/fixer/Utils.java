@@ -62,7 +62,6 @@ public class Utils {
 
     public static boolean isAccessibilitySettingsEnabled(Context context) {
         int accessibilityEnabled = 0;
-        final String service = context.getPackageName() + "/" + MonitorService.class.getCanonicalName();
         try {
             accessibilityEnabled = Settings.Secure.getInt(
                     context.getApplicationContext().getContentResolver(),
@@ -70,18 +69,17 @@ public class Utils {
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
-        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+        final TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
 
         if (accessibilityEnabled == 1) {
-            String settingValue = Settings.Secure.getString(
+            final String settingValue = Settings.Secure.getString(
                     context.getApplicationContext().getContentResolver(),
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
             if (settingValue != null) {
                 mStringColonSplitter.setString(settingValue);
                 while (mStringColonSplitter.hasNext()) {
-                    String accessibilityService = mStringColonSplitter.next();
-
-                    if (accessibilityService.equalsIgnoreCase(service)) {
+                    final String accessibilityService = mStringColonSplitter.next();
+                    if (accessibilityService.startsWith(context.getPackageName() + "/")) {
                         return true;
                     }
                 }
