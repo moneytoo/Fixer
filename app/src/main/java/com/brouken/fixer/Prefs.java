@@ -8,6 +8,7 @@ public class Prefs {
 
     SharedPreferences mSharedPreferences;
 
+    private boolean pref_no_safe_volume_warning = false;
     private boolean pref_keyboard_switching = false;
     private boolean pref_app_backup = false;
     private boolean pref_auto_select_client_certificate = false;
@@ -22,6 +23,7 @@ public class Prefs {
     }
 
     private void loadSavedPreferences() {
+        pref_no_safe_volume_warning = mSharedPreferences.getBoolean("pref_no_safe_volume_warning", pref_no_safe_volume_warning);
         pref_keyboard_switching = mSharedPreferences.getBoolean("pref_keyboard_switching", pref_keyboard_switching);
         pref_app_backup = mSharedPreferences.getBoolean("pref_app_backup", pref_app_backup);
         pref_auto_select_client_certificate = mSharedPreferences.getBoolean("pref_auto_select_client_certificate", pref_auto_select_client_certificate);
@@ -29,6 +31,10 @@ public class Prefs {
 
         pref_oneplus_call_recording = mSharedPreferences.getBoolean("pref_oneplus_call_recording", pref_oneplus_call_recording);
         pref_oneplus_alert_slider_actions = mSharedPreferences.getBoolean("pref_oneplus_alert_slider_actions", pref_oneplus_alert_slider_actions);
+    }
+
+    public boolean isNoSafeVolumeWarningEnabled() {
+        return pref_no_safe_volume_warning;
     }
 
     public boolean isKeyboardSwitchingEnabled() {
