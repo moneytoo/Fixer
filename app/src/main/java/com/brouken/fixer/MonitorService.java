@@ -290,7 +290,10 @@ public class MonitorService extends AccessibilityService {
             final boolean isMusicPlaying = audioManager.isMusicActive();
 
             if (mDownKey == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                dispatchMediaAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+                if (isMusicPlaying)
+                    dispatchMediaAction(KeyEvent.KEYCODE_MEDIA_PAUSE);
+                else
+                    dispatchMediaAction(KeyEvent.KEYCODE_MEDIA_PLAY);
             } else if (mDownKey == KeyEvent.KEYCODE_VOLUME_UP) {
                 if (isMusicPlaying)
                     dispatchMediaAction(KeyEvent.KEYCODE_MEDIA_NEXT);
