@@ -10,15 +10,6 @@
             android:summary="WRITE_SECURE_SETTINGS" />
 
         <SwitchPreference
-            android:key="pref_keyboard_switching"
-            android:title="Hacker's Keyboard only in Termux"
-            android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
-
-        <SwitchPreference
-            android:key="pref_app_backup"
-            android:title="App backup" />
-
-        <SwitchPreference
             android:key="pref_auto_select_client_certificate"
             android:title="Auto select client certificate"
             android:summary="Accessibility" />
@@ -32,11 +23,6 @@
 
     <PreferenceCategory
         android:title="OnePlus">
-
-        <SwitchPreference
-            android:key="pref_oneplus_call_recording"
-            android:title="Call recording"
-            android:summary="Accessibility and WRITE_SECURE_SETTINGS" />
 
         <SwitchPreference
             android:key="pref_oneplus_alert_slider_actions"

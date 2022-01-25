@@ -24,9 +24,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
-import com.brouken.fixer.feature.AppBackup;
-import com.brouken.fixer.feature.AppBackupReceiver;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +47,9 @@ public class MonitorService extends AccessibilityService {
     private CameraManager mCameraManager;
     private String mCameraId;
 
-    private AppBackupReceiver mAppBackupReceiver;
     private PowerConnectionReceiver mPowerConnectionReceiver;
 
     private ContentObserver onePlusAlertSliderObserver;
-    private ContentObserver onePlusCallRecordingObserver;
 
     private VolumeKeyLongPressListener volumeKeyLongPressListener;;
     private final VolumeKeyLongPressListener.OnVolumeKeyLongPressListener onVolumeKeyLongPressListener = new VolumeKeyLongPressListener.OnVolumeKeyLongPressListener() {
@@ -124,17 +119,11 @@ public class MonitorService extends AccessibilityService {
 //        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
         volumeKeyLongPressListener.unbind();
 
-        if (mAppBackupReceiver != null)
-            unregisterReceiver(mAppBackupReceiver);
-
         if (mPowerConnectionReceiver != null)
             unregisterReceiver(mPowerConnectionReceiver);
 
         if (onePlusAlertSliderObserver != null)
             contentResolver.unregisterContentObserver(onePlusAlertSliderObserver);
-
-        if (onePlusCallRecordingObserver != null)
-            contentResolver.unregisterContentObserver(onePlusCallRecordingObserver);
     }
 
     @Override
@@ -149,16 +138,6 @@ public class MonitorService extends AccessibilityService {
         if (mPrefs.isLongPressVolumeEnabled() && (isLockScreenOn || !isScreenOn))
 //            mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
             volumeKeyLongPressListener.bind();
-
-        if (mPrefs.isAppBackupEnabled()) {
-            final IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
-            intentFilter.addDataScheme("package");
-            mAppBackupReceiver = new AppBackupReceiver();
-            registerReceiver(mAppBackupReceiver, intentFilter);
-
-            AppBackup.checkScheduled(this);
-        }
 
         if (mPrefs.isLongPressVolumeEnabled()) {
             final IntentFilter intentFilter = new IntentFilter();
@@ -192,59 +171,12 @@ public class MonitorService extends AccessibilityService {
             };
             contentResolver.registerContentObserver(Settings.Global.getUriFor("three_Key_mode"), false, onePlusAlertSliderObserver);
         }
-
-        if (mPrefs.isOnePlusCallRecordingEnabled()) {
-            Utils.setEnableCallRecording(getApplicationContext());
-            onePlusCallRecordingObserver = new ContentObserver(new Handler()) {
-                @Override
-                public void onChange(boolean selfChange) {
-
-                    super.onChange(selfChange);
-
-                    final int value = Settings.Global.getInt(contentResolver, "op_voice_recording_supported_by_mcc", 0);
-
-                    log("op_voice_recording_supported_by_mcc onChange: " + value);
-
-                    if (value != 1)
-                        Utils.setEnableCallRecording(getApplicationContext());
-                }
-            };
-            contentResolver.registerContentObserver(Settings.Global.getUriFor("op_voice_recording_supported_by_mcc"), false, onePlusCallRecordingObserver);
-        }
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         //log("onAccessibilityEvent()");
         //log(accessibilityEvent.toString());
-
-        if (mPrefs.isKeyboardSwitchingEnabled()) {
-            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();
-
-                final List<String> visibleApps = new ArrayList<>();
-
-                List<AccessibilityWindowInfo> accessibilityWindowInfos = getWindows();
-                //log("windows=" + accessibilityWindowInfos.size());
-                for (AccessibilityWindowInfo accessibilityWindowInfo : accessibilityWindowInfos) {
-                    //log(accessibilityWindowInfo.toString());
-
-                    AccessibilityNodeInfo accessibilityNodeInfo = accessibilityWindowInfo.getRoot();
-                    if (accessibilityNodeInfo != null) {
-                        visibleApps.add(accessibilityNodeInfo.getPackageName().toString());
-                    }
-                }
-
-                if (visibleApps.contains("com.termux")) {
-                    Utils.changeIME(getApplicationContext(), true);
-                    return;
-                }
-
-                if (accessibilityEventPackageName.equals("org.pocketworkstation.pckeyboard")) {
-                    Utils.changeIME(getApplicationContext(), false);
-                }
-            }
-        }
 
         if (mPrefs.isAutoSelectClientCertificateEnabled()) {
             final String accessibilityEventPackageName = (String) accessibilityEvent.getPackageName();

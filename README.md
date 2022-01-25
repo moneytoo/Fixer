@@ -29,22 +29,12 @@ Description: <br>
 Requirements: WRITE_SECURE_SETTINGS permission<br>
 Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-disable-the-high-volume-warning-without-root/
 
-### Hacker's Keyboard only in Termux
-Description: Use Gboard as default IME, switch to Hacker's Keyboard in Termux<br>
-Requirements: Accessibility and WRITE_SECURE_SETTINGS permission<br>
-Notes: Based on Tasker guide https://www.xda-developers.com/how-to-automatically-change-your-keyboard-on-a-per-app-basis/
-
 ### Shortcut: Radio (Device info)
 Description: Set often unavailable network modes like "LTE only" or "LTE/WCDMA" (4G/3G without 2G)<br>
 Requirements: None<br>
 Notes: Because Samsung blocks secret codes (``*#*#4646#*#*``)...
 
 #### Since version 0.3
-
-### App backup
-Description: Automatic backup all installed/updated apps (apks)<br>
-Requirements: None<br>
-Notes: Uses location ``Android/data/com.brouken.fixer/files/``
 
 ### Auto select client certificate
 Description: <br>
@@ -55,11 +45,6 @@ Notes: Alternative to ``DeviceAdminReceiver.onChoosePrivateKeyAlias()``
 Description: Long press volume down for ``PLAY/PAUSE``; long press volume up for ``NEXT`` (when music is playing) or flashlight (when no music is playing)<br>
 Requirements: SET_VOLUME_KEY_LONG_PRESS_LISTENER permission<br>
 Notes: Based on: https://github.com/Cilenco/skipTrackLongPressVolume
-
-### OnePlus: Call recording
-Description: <br>
-Requirements: WRITE_SECURE_SETTINGS permission<br>
-Notes: Uses ``op_voice_recording_supported_by_mcc``. Works only with stock Phone app (mobile calls only, it doesn't work for SIP).
 
 ### OnePlus: Alert slider actions
 Description: Switch slider to Silent mode to enable flashlight<br>

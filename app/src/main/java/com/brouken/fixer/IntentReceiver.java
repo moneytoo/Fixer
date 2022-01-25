@@ -20,8 +20,6 @@ public class IntentReceiver extends BroadcastReceiver {
             Prefs prefs = new Prefs(context);
             if (prefs.isNoSafeVolumeWarningEnabled())
                 Utils.setNoSafeVolume(context);
-            if (prefs.isOnePlusCallRecordingEnabled())
-                Utils.setEnableCallRecording(context);
         } else if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             Intent delayedIntent = new Intent(context, IntentReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, delayedIntent, 0);
