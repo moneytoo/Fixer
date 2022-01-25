@@ -8,12 +8,12 @@ import android.widget.Toast;
 public class Shortcuts {
 
     public static void startRadio(Context context) {
-        startSettingsActivity(context, "com.android.settings.RadioInfo");
+        startPhoneActivity(context, "com.android.phone.settings.RadioInfo");
     }
 
-    private static void startSettingsActivity(Context context, final String activityName) {
+    private static void startPhoneActivity(Context context, final String activityName) {
         Intent intent = new Intent("android.intent.action.MAIN");
-        intent.setComponent(new ComponentName("com.android.settings",activityName));
+        intent.setComponent(new ComponentName("com.android.phone",activityName));
         try {
             context.startActivity(intent);
         } catch (Exception x) {
