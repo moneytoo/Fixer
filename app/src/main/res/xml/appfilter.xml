@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item component="ComponentInfo{com.alibaba.aliexpresshd/com.alibaba.aliexpresshd.home.ui.MainActivity}" drawable="aliexpress" />
-    <item component="ComponentInfo{com.termux/com.termux.app.TermuxActivity}" drawable="termux" />
-    <item component="ComponentInfo{com.google.android.apps.maps/com.google.android.maps.MapsActivity}" drawable="google_maps" />
-    <item component="ComponentInfo{com.google.android.apps.photos/com.google.android.apps.photos.home.HomeActivity}" drawable="google_photos" />
-    <item component="ComponentInfo{com.android.chrome/com.google.android.apps.chrome.Main}" drawable="chrome" />
-    <item component="ComponentInfo{com.google.android.apps.tachyon/com.google.android.apps.tachyon.MainActivity}" drawable="duo" />
-    <item component="ComponentInfo{com.poupa.vinylmusicplayer/com.poupa.vinylmusicplayer.ui.activities.MainActivity}" drawable="vinyl" />
-    <item component="ComponentInfo{com.netflix.mediaclient/com.netflix.mediaclient.ui.launch.UIWebViewActivity}" drawable="netflix" />
-    <item component="ComponentInfo{com.brouken.fixer/com.brouken.fixer.SettingsActivity}" drawable="fixer" />
-    <item component="ComponentInfo{pl.solidexplorer2/pl.solidexplorer.SolidExplorer}" drawable="solid_explorer" />
-
     <!-- Adaptive icons -->
-    <item component="ComponentInfo{cz.mbank/pl.mbank.core.activity.StartActivity}" drawable="mbank" />
-    <item component="ComponentInfo{cz.creditas.mb/cz.creditas.mb.UnsecuredMainActivity}" drawable="creditas" />
     <item component="ComponentInfo{com.bodunov.GalileoPro/com.bodunov.galileo.SplashActivity}" drawable="guru_maps" />
 </resources>
