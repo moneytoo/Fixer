@@ -37,46 +37,6 @@ public class Utils {
         }
     }
 
-    public static void setEnableCallRecording(Context context) {
-        // adb shell settings put global op_voice_recording_supported_by_mcc 1
-        if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
-            try {
-                Settings.Global.putInt(context.getContentResolver(), "op_voice_recording_supported_by_mcc", 1);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void changeIME(Context context, boolean temporaryIME) {
-        // https://stackoverflow.com/questions/11036435/switch-keyboard-profile-programmatically
-        // ime list -s
-        // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
-        // org.pocketworkstation.pckeyboard/.LatinIME
-
-        // ime set com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
-
-        // settings get secure default_input_method
-        // settings put secure default_input_method org.pocketworkstation.pckeyboard/.LatinIME
-
-        log("changeIME()");
-
-        String ime = "org.pocketworkstation.pckeyboard/.LatinIME";
-
-        if (!temporaryIME)
-            ime = "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
-
-        try {
-            if (hasPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)) {
-                Settings.Secure.putString(context.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD, ime);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean isAccessibilitySettingsEnabled(Context context) {
         int accessibilityEnabled = 0;
         try {
@@ -103,6 +63,23 @@ public class Utils {
             }
         }
 
+        return false;
+    }
+
+    public static boolean isNotificationServiceEnabled(Context context) {
+        String pkgName = context.getPackageName();
+        final String flat = Settings.Secure.getString(context.getContentResolver(), "enabled_notification_listeners");
+        if (!TextUtils.isEmpty(flat)) {
+            final String[] names = flat.split(":");
+            for (int i = 0; i < names.length; i++) {
+                final ComponentName cn = ComponentName.unflattenFromString(names[i]);
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.getPackageName())) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 }

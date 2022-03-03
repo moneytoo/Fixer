@@ -52,12 +52,18 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             });
 
+            final PreferenceCategory categorySetup = (PreferenceCategory) findPreference("pref_setup");
+
             if (Utils.isAccessibilitySettingsEnabled(this.getContext())) {
-                final PreferenceCategory categorySetup = (PreferenceCategory) findPreference("pref_setup");
                 categorySetup.removePreference(findPreference("pref_accessibility"));
 
-                final PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
-                preferenceScreen.removePreference(findPreference("pref_setup"));
+                // TODO
+//                final PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("screen");
+//                preferenceScreen.removePreference(findPreference("pref_setup"));
+            }
+
+            if (Utils.isNotificationServiceEnabled(this.getContext())) {
+                categorySetup.removePreference(findPreference("pref_notifications"));
             }
         }
 

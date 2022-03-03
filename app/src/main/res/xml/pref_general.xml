@@ -49,6 +49,12 @@
             <intent android:action="android.settings.ACCESSIBILITY_SETTINGS" />
         </Preference>
 
+        <Preference
+            android:title="Notifications"
+            android:key="pref_notifications">
+            <intent android:action="android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS" />
+        </Preference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
